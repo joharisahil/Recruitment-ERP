@@ -62,6 +62,11 @@ const OnboardRecruiter = () => {
             key={index}
             className="relative rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
           >
+            <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Recruiter OnBoarding Form
+              </h3>
+            </div>
             {/* Close Button */}
             <button
               onClick={() => removeForm(index)}
