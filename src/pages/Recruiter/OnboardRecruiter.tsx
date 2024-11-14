@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import { NavLink } from 'react-router-dom';
 
 type RecruiterFormField = 'firstName' | 'lastName' | 'email' | 'submitted';
 
@@ -42,11 +43,11 @@ const OnboardRecruiter = () => {
     ]);
   };
 
-  const toggleFormView = (index: number) => {
-    const updatedForms = [...recruiterForms];
-    updatedForms[index].submitted = false;
-    setRecruiterForms(updatedForms);
-  };
+  //   const toggleFormView = (index: number) => {
+  //     const updatedForms = [...recruiterForms];
+  //     updatedForms[index].submitted = false;
+  //     setRecruiterForms(updatedForms);
+  //   };
 
   const removeForm = (index: number) => {
     setRecruiterForms(recruiterForms.filter((_, i) => i !== index));
@@ -85,12 +86,13 @@ const OnboardRecruiter = () => {
                 <p>Email: {form.email}</p>
                 <p>Status: Not Filled</p>
                 <div className="flex gap-4 mt-4">
-                  <button
+                  <NavLink
+                    to="/recruiter-master/onboard-recruiter/display-onboarding-form"
                     className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
-                    onClick={() => toggleFormView(index)}
+                    // onClick={() => toggleFormView(index)}
                   >
                     View Form
-                  </button>
+                  </NavLink>
                   <button className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90">
                     Get Link
                   </button>
