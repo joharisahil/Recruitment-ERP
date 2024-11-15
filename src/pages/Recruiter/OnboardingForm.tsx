@@ -33,21 +33,29 @@ const OnboardingForm = () => {
 
               <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                 <div className="w-full xl:w-1/2">
-                  <label className="mb-2.5 block text-black">Date Of Birth</label>
+                  <label className="mb-2.5 block text-black">
+                    Date Of Birth
+                  </label>
                   <input
-                    type="text"
+                    type="date"
                     placeholder="Enter your DOB"
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
 
                 <div className="w-full xl:w-1/2">
-                  <label className="mb-2.5 block text-black"></label>
-                  <input
-                    type="text"
-                    placeholder="Enter your last name"
+                  <label className="mb-2.5 block text-black">Gender</label>
+                  <select
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
-                  />
+                    defaultValue="" // Default value for placeholder
+                  >
+                    <option value="" disabled>
+                      Select your gender
+                    </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
                 </div>
               </div>
 

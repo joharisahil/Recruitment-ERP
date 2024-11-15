@@ -36,20 +36,19 @@ function App() {
     <Loader />
   ) : (
     <>
-      <Routes>
-        <Route
-          path="/onboarding-form"
-          element={
-            <>
-              <PageTitle title="OnBoarding Form | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <OnboardingForm />
-            </>
-          }
-        />
-      </Routes>
-
-      {/* Conditionally render DefaultLayout only if the path is not '/onboarding-form' */}
-      {pathname !== '/onboarding-form' && (
+      {pathname == '/onboarding-form' ? (
+        <Routes>
+          <Route
+            path="/onboarding-form"
+            element={
+              <>
+                <PageTitle title="OnBoarding Form | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <OnboardingForm />
+              </>
+            }
+          />
+        </Routes>
+      ) : (
         <DefaultLayout>
           <Routes>
             <Route
