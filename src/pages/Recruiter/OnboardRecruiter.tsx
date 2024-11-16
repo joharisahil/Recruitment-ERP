@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { NavLink } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type RecruiterFormField = 'firstName' | 'lastName' | 'email' | 'submitted';
 
@@ -43,14 +45,34 @@ const OnboardRecruiter = () => {
     ]);
   };
 
-  //   const toggleFormView = (index: number) => {
-  //     const updatedForms = [...recruiterForms];
-  //     updatedForms[index].submitted = false;
-  //     setRecruiterForms(updatedForms);
-  //   };
-
   const removeForm = (index: number) => {
     setRecruiterForms(recruiterForms.filter((_, i) => i !== index));
+  };
+
+  const copyToClipboard = () => {
+    const onboardingLink = 'http://localhost:5173/onboarding-form';
+    navigator.clipboard
+      .writeText(onboardingLink)
+      .then(() => {
+        toast.success('Link copied to clipboard!', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      })
+      .catch(() => {
+        toast.error('Failed to copy link.', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      });
   };
 
   return (
@@ -89,11 +111,13 @@ const OnboardRecruiter = () => {
                   <NavLink
                     to="/recruiter-master/onboard-recruiter/display-onboarding-form"
                     className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
-                    // onClick={() => toggleFormView(index)}
                   >
                     View Form
                   </NavLink>
-                  <button className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90">
+                  <button
+                    onClick={copyToClipboard}
+                    className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
+                  >
                     Get Link
                   </button>
                 </div>
@@ -149,6 +173,7 @@ const OnboardRecruiter = () => {
                   </div>
                   <button
                     type="submit"
+                    onClick={copyToClipboard}
                     className="w-full rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                   >
                     Get Link

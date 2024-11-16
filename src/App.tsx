@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import toastify styles
 
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
@@ -36,6 +38,17 @@ function App() {
     <Loader />
   ) : (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {pathname == '/onboarding-form' ? (
         <Routes>
           <Route
