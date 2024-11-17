@@ -21,6 +21,7 @@ import DefaultLayout from './layout/DefaultLayout';
 import OnBoardRecruiter from './pages/Recruiter/OnboardRecruiter';
 import DisplayOnBoardingForm from './components/Recruiterform/DisplayOnBoardingForm';
 import OnboardingForm from './pages/Recruiter/OnboardingForm';
+import OnboardingList from './pages/Recruiter/OnboardingList';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -92,11 +93,20 @@ function App() {
               }
             />
             <Route
-              path="/recruiter-master/onboard-recruiter/display-onboarding-form"
+              path="/recruiter-master/onboarding-list/display-onboarding-form"
               element={
                 <>
                   <PageTitle title="OnBoarding Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                   <DisplayOnBoardingForm />
+                </>
+              }
+            />
+            <Route
+              path="/recruiter-master/onboarding-list"
+              element={
+                <>
+                  <PageTitle title="OnBoarding Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <OnboardingList />
                 </>
               }
             />

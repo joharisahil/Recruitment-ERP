@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import OnboardingList from './OnboardingList';
 
 type RecruiterFormField = 'firstName' | 'lastName' | 'email' | 'submitted';
 
@@ -14,6 +15,7 @@ interface RecruiterForm {
 }
 
 const OnboardRecruiter = () => {
+  const navigate = useNavigate();
   const [recruiterForms, setRecruiterForms] = useState<RecruiterForm[]>([
     { firstName: '', lastName: '', email: '', submitted: false },
   ]);
@@ -36,6 +38,8 @@ const OnboardRecruiter = () => {
     const updatedForms = [...recruiterForms];
     updatedForms[index].submitted = true;
     setRecruiterForms(updatedForms);
+
+    navigate('/recruiter-master/onboarding-list');
   };
 
   const addNewRecruiterForm = () => {
@@ -99,29 +103,7 @@ const OnboardRecruiter = () => {
             </button>
 
             {form.submitted ? (
-              <div className="p-6.5">
-                <h3 className="font-medium text-black dark:text-white">
-                  Recruiter Summary
-                </h3>
-                <p>First Name: {form.firstName}</p>
-                <p>Last Name: {form.lastName}</p>
-                <p>Email: {form.email}</p>
-                <p>Status: Not Filled</p>
-                <div className="flex gap-4 mt-4">
-                  <NavLink
-                    to="/recruiter-master/onboard-recruiter/display-onboarding-form"
-                    className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
-                  >
-                    View Form
-                  </NavLink>
-                  <button
-                    onClick={copyToClipboard}
-                    className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
-                  >
-                    Get Link
-                  </button>
-                </div>
-              </div>
+              <OnboardingList />
             ) : (
               <form onSubmit={(event) => handleSubmit(index, event)}>
                 <div className="p-6.5">
