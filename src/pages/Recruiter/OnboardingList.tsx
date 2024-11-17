@@ -99,13 +99,22 @@ const OnboardingList = () => {
                 <p>Email: {form.email}</p>
                 <p>Status: {form.status}</p>
                 <div className="flex gap-4 mt-4">
-                  <NavLink
-                    // to={`/recruiter-master/onboarding-list/display-onboarding-form/${form.id}`}
-                    to="/recruiter-master/onboarding-list/display-onboarding-form"
-                    className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
-                  >
-                    View Form
-                  </NavLink>
+                  {form.status === 'Completed' ? (
+                    <NavLink
+                      //   to={`/recruiter-master/onboarding-list/display-onboarding-form/${form.id}`}
+                      to="/recruiter-master/onboarding-list/display-onboarding-form"
+                      className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
+                    >
+                      View Form
+                    </NavLink>
+                  ) : (
+                    <button
+                      disabled
+                      className="rounded bg-gray-300 p-2 font-medium text-gray cursor-not-allowed"
+                    >
+                      View Form
+                    </button>
+                  )}
                   <button
                     onClick={copyToClipboard}
                     className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
