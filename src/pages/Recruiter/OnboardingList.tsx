@@ -97,7 +97,18 @@ const OnboardingList = () => {
                 <p>First Name: {form.firstName}</p>
                 <p>Last Name: {form.lastName}</p>
                 <p>Email: {form.email}</p>
-                <p>Status: {form.status}</p>
+                <p>
+                  Status:{' '}
+                  <span
+                    className={`font-semibold ${
+                      form.status === 'Completed'
+                        ? ' text-red-500'
+                        : 'text-gray-500'
+                    }`}
+                  >
+                    {form.status}
+                  </span>
+                </p>
                 <div className="flex gap-4 mt-4">
                   {form.status === 'Completed' ? (
                     <NavLink
