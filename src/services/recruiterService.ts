@@ -13,6 +13,18 @@ interface RequestPayload {
   };
 }
 
+interface Recruiter {
+    token: string;
+    FirstName: string;
+    LastName: string;
+    EmailId: string;
+    status: string;
+  }
+
+interface GetAllRecruitersResponse {
+    Data: Recruiter[];
+  }
+
 export const addRecruiter = async (payload: RequestPayload): Promise<ApiResponse> => {
   try {
     const response = await axios.post<ApiResponse>('https://recruitmentsystem.onrender.com/api/admin/createRecruiter', payload);
@@ -34,3 +46,23 @@ export const addRecruiter = async (payload: RequestPayload): Promise<ApiResponse
     }
   }
 };
+
+export const getAllRecruiters = async (): Promise<Recruiter[]> => {
+    try {
+      const response = await axios.get<GetAllRecruitersResponse>(
+        'https://recruitmentsystem.onrender.com/api/admin/getAllRecruiters'
+      );
+      return response.data.Data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error:', error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || 'Failed to fetch recruiters.');
+      } else if (error instanceof Error) {
+        console.error('General error:', error.message);
+        throw new Error(error.message);
+      } else {
+        console.error('Unknown error:', error);
+        throw new Error('An unknown error occurred.');
+      }
+    }
+  };

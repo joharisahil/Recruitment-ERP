@@ -2,30 +2,51 @@ import { NavLink } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getAllRecruiters } from '../../services/recruiterService';
 
 const OnboardingList = () => {
-  // Mock data
-  const [onboardingForms, setOnboardingForms] = useState([
+  const [onboardingForms, setOnboardingForms] = useState<
     {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      status: 'Not Filled',
-    },
-    {
-      id: 2,
-      firstName: 'Jane',
-      lastName: 'Smith',
-      email: 'jane.smith@example.com',
-      status: 'Completed',
-    },
-  ]);
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      status: string;
+    }[]
+  >([]);
 
-  // Function to copy the onboarding form link
-  const copyToClipboard = () => {
-    const onboardingLink = 'http://localhost:5173/onboarding-form';
+  // Fetch onboarding forms
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getAllRecruiters();
+        const formattedData = data.map((recruiter) => ({
+          id: recruiter.token,
+          firstName: recruiter.FirstName,
+          lastName: recruiter.LastName,
+          email: recruiter.EmailId,
+          status: recruiter.status === 'FILLED' ? 'Completed' : 'Not Filled',
+        }));
+        setOnboardingForms(formattedData);
+      } catch (error) {
+        toast.error('Failed to fetch onboarding forms.', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Copy the onboarding form link
+  const copyToClipboard = (token: string) => {
+    const onboardingLink = `http://localhost:5173/onboarding-form?token=${token}`;
     navigator.clipboard
       .writeText(onboardingLink)
       .then(() => {
@@ -50,8 +71,8 @@ const OnboardingList = () => {
       });
   };
 
-  // Function to remove an onboarding form
-  const removeForm = (id: number) => {
+  // Remove onboarding form
+  const removeForm = (id: string) => {
     const updatedForms = onboardingForms.filter((form) => form.id !== id);
     setOnboardingForms(updatedForms);
     if (updatedForms.length === 0) {
@@ -112,7 +133,6 @@ const OnboardingList = () => {
                 <div className="flex gap-4 mt-4">
                   {form.status === 'Completed' ? (
                     <NavLink
-                      //   to={`/recruiter-master/onboarding-list/display-onboarding-form/${form.id}`}
                       to="/recruiter-master/onboarding-list/display-onboarding-form"
                       className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
                     >
@@ -127,7 +147,7 @@ const OnboardingList = () => {
                     </button>
                   )}
                   <button
-                    onClick={copyToClipboard}
+                    onClick={() => copyToClipboard(form.id)}
                     className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
                   >
                     Get Link
