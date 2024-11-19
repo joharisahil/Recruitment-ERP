@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import OnboardingList from './OnboardingList';
+import { addRecruiter } from '../../services/recruiterService';
+import axios from 'axios';
 
 type RecruiterFormField = 'firstName' | 'lastName' | 'email' | 'submitted';
 
@@ -33,15 +35,6 @@ const OnboardRecruiter = () => {
     setRecruiterForms(updatedForms);
   };
 
-  const handleSubmit = (index: number, event: React.FormEvent) => {
-    event.preventDefault();
-    const updatedForms = [...recruiterForms];
-    updatedForms[index].submitted = true;
-    setRecruiterForms(updatedForms);
-
-    navigate('/recruiter-master/onboarding-list');
-  };
-
   const addNewRecruiterForm = () => {
     setRecruiterForms([
       ...recruiterForms,
@@ -53,30 +46,65 @@ const OnboardRecruiter = () => {
     setRecruiterForms(recruiterForms.filter((_, i) => i !== index));
   };
 
-  const copyToClipboard = () => {
-    const onboardingLink = 'http://localhost:5173/onboarding-form';
-    navigator.clipboard
-      .writeText(onboardingLink)
-      .then(() => {
-        toast.success('Link copied to clipboard!', {
-          position: 'top-right',
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      })
-      .catch(() => {
-        toast.error('Failed to copy link.', {
-          position: 'top-right',
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+  const handleSubmit = async (index: number, event: React.FormEvent) => {
+    event.preventDefault();
+
+    const form = recruiterForms[index];
+
+    try {
+      // Call the service to send data
+      const payload = {
+        RequestMap: {
+          firstName: form.firstName,
+          lastName: form.lastName,
+          emailId: form.email,
+        },
+      };
+
+      const response = await addRecruiter(payload);
+
+      // Update the form state to mark it as submitted
+      const updatedForms = [...recruiterForms];
+      updatedForms[index].submitted = true;
+      setRecruiterForms(updatedForms);
+
+      // Navigate or use the token as required
+      const onboardingLink = `http://localhost:5173/onboarding-form?token=${response.token}`;
+      // `Link copied to clipboard: ${onboardingLink}`
+      toast.success('Link copied to clipboard', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: true,
       });
+
+      navigator.clipboard.writeText(onboardingLink);
+
+      navigate('/recruiter-master/onboarding-list');
+    } catch (error) {
+      // Error handling with type narrowing
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message || 'Failed to add recruiter.',
+          {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: true,
+          },
+        );
+      } else if (error instanceof Error) {
+        toast.error(error.message, {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: true,
+        });
+      } else {
+        toast.error('An unknown error occurred.', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: true,
+        });
+      }
+    }
   };
 
   return (
@@ -155,7 +183,7 @@ const OnboardRecruiter = () => {
                   </div>
                   <button
                     type="submit"
-                    onClick={copyToClipboard}
+                    // onClick={copyToClipboard}
                     className="w-full rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                   >
                     Get Link
