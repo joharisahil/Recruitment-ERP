@@ -22,6 +22,7 @@ import OnBoardRecruiter from './pages/Recruiter/OnboardRecruiter';
 import DisplayOnBoardingForm from './components/Recruiterform/DisplayOnBoardingForm';
 import OnboardingForm from './pages/Recruiter/OnboardingForm';
 import OnboardingList from './pages/Recruiter/OnboardingList';
+import AllRecruiterDetails from './pages/Recruiter/AllRecruiterDetails';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -88,7 +89,7 @@ function App() {
               element={
                 <>
                   <PageTitle title="Recruiter Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                  <FormLayout />
+                  <AllRecruiterDetails />
                 </>
               }
             />
