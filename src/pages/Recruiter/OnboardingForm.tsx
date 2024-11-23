@@ -465,7 +465,7 @@ const OnboardingForm = () => {
 
               <div className="flex gap-4 mt-4">
                 <button className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90">
-                  OnBoard
+                  Submit
                 </button>
                 <button className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90">
                   Close
