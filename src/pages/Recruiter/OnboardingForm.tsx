@@ -218,9 +218,9 @@ const OnboardingForm = () => {
                             type="text"
                             maxLength={1}
                             className="w-12 h-12 text-center rounded border-[1.5px] border-stroke py-2 px-3 text-lg outline-none transition focus:border-primary active:border-primary"
-                            ref={(el) => (mobileOtpRefs.current[index] = el)} // Use mobile refs
+                            ref={(el) => (emailOtpRefs.current[index] = el)} // Use mobile refs
                             onChange={(e) =>
-                              handleOTPChange(e, index, mobileOtpRefs)
+                              handleOTPChange(e, index, emailOtpRefs)
                             } // Handle input
                           />
                         ))}
