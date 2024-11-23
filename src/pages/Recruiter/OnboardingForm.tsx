@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { getRecruiterByToken } from '../../services/recruiterService';
 
 const OnboardingForm = () => {
-  // Separate refs for mobile and email OTP inputs
   const [recruiterData, setRecruiterData] = useState({
     firstName: '',
     lastName: '',
@@ -12,7 +11,7 @@ const OnboardingForm = () => {
 
   const location = useLocation();
   const token = new URLSearchParams(location.search).get('token');
-
+  // Separate refs for mobile and email OTP inputs
   const mobileOtpRefs = useRef<(HTMLInputElement | null)[]>([]);
   const emailOtpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
