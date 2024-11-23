@@ -1,9 +1,41 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { getRecruiterByToken } from '../../services/recruiterService';
 
 const OnboardingForm = () => {
   // Separate refs for mobile and email OTP inputs
+  const [recruiterData, setRecruiterData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+  });
+
+  const location = useLocation();
+  const token = new URLSearchParams(location.search).get('token');
+
   const mobileOtpRefs = useRef<(HTMLInputElement | null)[]>([]);
   const emailOtpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  //API fetching handling firstname, lastname & email
+  useEffect(() => {
+    if (token) {
+      const fetchRecruiterDetails = async () => {
+        try {
+          const response = await getRecruiterByToken(token);
+          const { firstName, lastName, EmailIdPersonal } = response.Data;
+          setRecruiterData({
+            firstName,
+            lastName,
+            email: EmailIdPersonal,
+          });
+        } catch (error) {
+          console.error('Failed to fetch recruiter details:', error);
+        }
+      };
+
+      fetchRecruiterDetails();
+    }
+  }, [token]);
 
   // Common function to handle OTP input
   const handleOTPChange = (
@@ -47,6 +79,7 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your first name"
+                    value={recruiterData.firstName}
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -56,6 +89,7 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your last name"
+                    value={recruiterData.lastName}
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -141,6 +175,7 @@ const OnboardingForm = () => {
                   <input
                     type="email"
                     placeholder="Enter your email address"
+                    value={recruiterData.email}
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
