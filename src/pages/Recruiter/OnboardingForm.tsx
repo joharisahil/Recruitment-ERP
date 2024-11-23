@@ -67,7 +67,7 @@ const OnboardingForm = () => {
         <div className="relative rounded-sm border border-stroke">
           <div className="border-b border-stroke py-4 px-6.5">
             <h3 className="font-medium text-black">
-              Recruiter OnBoarding Summary
+              Recruiter OnBoarding Form
             </h3>
           </div>
 
@@ -80,6 +80,7 @@ const OnboardingForm = () => {
                     type="text"
                     placeholder="Enter your first name"
                     value={recruiterData.firstName}
+                    readOnly
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -90,6 +91,7 @@ const OnboardingForm = () => {
                     type="text"
                     placeholder="Enter your last name"
                     value={recruiterData.lastName}
+                    readOnly
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -149,21 +151,42 @@ const OnboardingForm = () => {
                   <label className="mb-2.5 block text-black">
                     Enter Mobile Number OTP
                   </label>
-                  <div className="flex gap-2">
-                    {Array(4)
-                      .fill(0)
-                      .map((_, index) => (
-                        <input
-                          key={index}
-                          type="text"
-                          maxLength={1}
-                          className="w-12 h-12 text-center rounded border-[1.5px] border-stroke py-2 px-3 text-lg outline-none transition focus:border-primary active:border-primary"
-                          ref={(el) => (mobileOtpRefs.current[index] = el)} // Use mobile refs
-                          onChange={(e) =>
-                            handleOTPChange(e, index, mobileOtpRefs)
-                          } // Handle input
-                        />
-                      ))}
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <div className="flex gap-2">
+                      {Array(4)
+                        .fill(0)
+                        .map((_, index) => (
+                          <input
+                            key={index}
+                            type="text"
+                            maxLength={1}
+                            className="w-12 h-12 text-center rounded border-[1.5px] border-stroke py-2 px-3 text-lg outline-none transition focus:border-primary active:border-primary"
+                            ref={(el) => (mobileOtpRefs.current[index] = el)} // Use mobile refs
+                            onChange={(e) =>
+                              handleOTPChange(e, index, mobileOtpRefs)
+                            } // Handle input
+                          />
+                        ))}
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                      <button
+                        type="button"
+                        className="h-12 rounded bg-primary py-2 px-4 text-white transition hover:bg-primary-dark"
+                        onClick={() => console.log('Get OTP clicked')} // Replace with your handler
+                      >
+                        Get OTP
+                      </button>
+
+                      <button
+                        type="button"
+                        className="h-12 rounded bg-green-500 py-2 px-4 text-white transition hover:bg-green-600"
+                        onClick={() => console.log('Verify OTP clicked')} // Replace with your handler
+                      >
+                        Verify
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -176,6 +199,7 @@ const OnboardingForm = () => {
                     type="email"
                     placeholder="Enter your email address"
                     value={recruiterData.email}
+                    readOnly
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -184,21 +208,42 @@ const OnboardingForm = () => {
                   <label className="mb-2.5 block text-black">
                     Enter Email OTP
                   </label>
-                  <div className="flex gap-2">
-                    {Array(4)
-                      .fill(0)
-                      .map((_, index) => (
-                        <input
-                          key={index}
-                          type="text"
-                          maxLength={1}
-                          className="w-12 h-12 text-center rounded border-[1.5px] border-stroke py-2 px-3 text-lg outline-none transition focus:border-primary active:border-primary"
-                          ref={(el) => (emailOtpRefs.current[index] = el)} // Use email refs
-                          onChange={(e) =>
-                            handleOTPChange(e, index, emailOtpRefs)
-                          } // Handle input
-                        />
-                      ))}
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <div className="flex gap-2">
+                      {Array(4)
+                        .fill(0)
+                        .map((_, index) => (
+                          <input
+                            key={index}
+                            type="text"
+                            maxLength={1}
+                            className="w-12 h-12 text-center rounded border-[1.5px] border-stroke py-2 px-3 text-lg outline-none transition focus:border-primary active:border-primary"
+                            ref={(el) => (mobileOtpRefs.current[index] = el)} // Use mobile refs
+                            onChange={(e) =>
+                              handleOTPChange(e, index, mobileOtpRefs)
+                            } // Handle input
+                          />
+                        ))}
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                      <button
+                        type="button"
+                        className="h-12 rounded bg-primary py-2 px-4 text-white transition hover:bg-primary-dark"
+                        onClick={() => console.log('Get OTP clicked')} // Replace with your handler
+                      >
+                        Get OTP
+                      </button>
+
+                      <button
+                        type="button"
+                        className="h-12 rounded bg-green-500 py-2 px-4 text-white transition hover:bg-green-600"
+                        onClick={() => console.log('Verify OTP clicked')} // Replace with your handler
+                      >
+                        Verify
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
