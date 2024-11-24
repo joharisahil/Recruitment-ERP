@@ -50,6 +50,13 @@ const OnboardingList = () => {
     };
 
     fetchData();
+
+    //for getting the status change on the UI without refresh of the page
+    // const interval = setInterval(() => {
+    //   fetchData();
+    // }, 10000); // Poll every 10 seconds
+
+    // return () => clearInterval(interval);
   }, []);
 
   // Copy the onboarding form link
@@ -149,7 +156,7 @@ const OnboardingList = () => {
                   <div className="flex gap-4 mt-4">
                     {form.status === 'Completed' ? (
                       <NavLink
-                        to="/recruiter-master/onboarding-list/display-onboarding-form"
+                        to={`/recruiter-master/onboarding-list/display-onboarding-form?token=${form.id}`}
                         className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
                       >
                         View Form
