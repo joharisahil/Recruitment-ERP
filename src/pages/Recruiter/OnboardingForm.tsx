@@ -1,12 +1,38 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getRecruiterByToken } from '../../services/recruiterService';
+import {
+  getRecruiterByToken,
+  saveRecruiter,
+} from '../../services/recruiterService';
 
 const OnboardingForm = () => {
   const [recruiterData, setRecruiterData] = useState({
     firstName: '',
     lastName: '',
     email: '',
+  });
+
+  const [recruiterSubmitData, setRecruiterSubmitData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    mobileNoPersonal: '',
+    mobileNoOfficial: '',
+    dateOfBirth: '',
+    gender: '',
+    bankName: '',
+    bankBranch: '',
+    accountNo: '',
+    ifscCode: '',
+    panNumber: '',
+    aadhaarNumber: '',
+    previousCompanyName: '',
+    previousJobTitle: '',
+    totalExp: '',
+    totalRecruitmentExp: '',
+    lastJoinDate: '',
+    lastWorkingDate: '',
   });
 
   const location = useLocation();
@@ -22,11 +48,20 @@ const OnboardingForm = () => {
         try {
           const response = await getRecruiterByToken(token);
           const { firstName, lastName, EmailIdPersonal } = response.Data;
+
+          // Update both recruiterData and recruiterSubmitData
           setRecruiterData({
             firstName,
             lastName,
             email: EmailIdPersonal,
           });
+
+          setRecruiterSubmitData((prev) => ({
+            ...prev,
+            firstName,
+            lastName,
+            email: EmailIdPersonal,
+          }));
         } catch (error) {
           console.error('Failed to fetch recruiter details:', error);
         }
@@ -60,6 +95,28 @@ const OnboardingForm = () => {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!token) {
+      console.error('Token is missing');
+      return;
+    }
+
+    const payload = {
+      RequestMap: {
+        token,
+        ...recruiterSubmitData,
+      },
+    };
+
+    try {
+      const response = await saveRecruiter(payload);
+      alert(response.SuccessMessage); // Show success message
+    } catch (error) {
+      console.error('Failed to save recruiter:', error);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col gap-9">
@@ -70,7 +127,7 @@ const OnboardingForm = () => {
             </h3>
           </div>
 
-          <form action="#">
+          <form onSubmit={handleSubmit}>
             <div className="p-6.5">
               <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                 <div className="w-full xl:w-1/2">
@@ -78,8 +135,13 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your first name"
-                    value={recruiterData.firstName}
-                    readOnly
+                    value={recruiterSubmitData.firstName}
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        firstName: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -89,8 +151,13 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your last name"
-                    value={recruiterData.lastName}
-                    readOnly
+                    value={recruiterSubmitData.lastName}
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        lastName: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -104,6 +171,12 @@ const OnboardingForm = () => {
                   <input
                     type="date"
                     placeholder="Enter your DOB"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        dateOfBirth: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -113,6 +186,12 @@ const OnboardingForm = () => {
                   <select
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                     defaultValue="" // Default value for placeholder
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        gender: e.target.value,
+                      })
+                    }
                   >
                     <option value="" disabled>
                       Select your gender
@@ -129,6 +208,12 @@ const OnboardingForm = () => {
                 <input
                   type="text"
                   placeholder="Enter your address"
+                  onChange={(e) =>
+                    setRecruiterSubmitData({
+                      ...recruiterSubmitData,
+                      address: e.target.value,
+                    })
+                  }
                   className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                 />
               </div>
@@ -142,6 +227,12 @@ const OnboardingForm = () => {
                   <input
                     type="number"
                     placeholder="Enter your mobile number"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        mobileNoPersonal: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -197,8 +288,13 @@ const OnboardingForm = () => {
                   <input
                     type="email"
                     placeholder="Enter your email address"
-                    value={recruiterData.email}
-                    readOnly
+                    value={recruiterSubmitData.email}
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        email: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -254,6 +350,12 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your bank name"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        bankName: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -263,6 +365,12 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your account number"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        bankBranch: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -276,6 +384,12 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your account number"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        accountNo: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -285,6 +399,12 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your IFSC code"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        ifscCode: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -299,6 +419,12 @@ const OnboardingForm = () => {
                   <input
                     type="number"
                     placeholder="Enter your adhaar number"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        aadhaarNumber: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -306,8 +432,14 @@ const OnboardingForm = () => {
                 <div className="w-full xl:w-1/2">
                   <label className="mb-2.5 block text-black">Pan Card</label>
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Enter your pan number"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        panNumber: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -322,6 +454,12 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your previous company name"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        previousCompanyName: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -333,6 +471,12 @@ const OnboardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your previous job title"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        previousJobTitle: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -346,6 +490,12 @@ const OnboardingForm = () => {
                   <input
                     type="number"
                     placeholder="Enter your total experience"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        totalExp: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -357,6 +507,12 @@ const OnboardingForm = () => {
                   <input
                     type="number"
                     placeholder="Enter your recruitement experience"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        totalRecruitmentExp: e.target.value,
+                      })
+                    }
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
                 </div>
@@ -369,6 +525,12 @@ const OnboardingForm = () => {
                   </label>
                   <input
                     type="date"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        lastJoinDate: e.target.value,
+                      })
+                    }
                     // placeholder="Enter your joining date with last employer"
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />
@@ -380,6 +542,12 @@ const OnboardingForm = () => {
                   </label>
                   <input
                     type="date"
+                    onChange={(e) =>
+                      setRecruiterSubmitData({
+                        ...recruiterSubmitData,
+                        lastWorkingDate: e.target.value,
+                      })
+                    }
                     // placeholder="Enter your last working date with last employer"
                     className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                   />

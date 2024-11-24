@@ -15,8 +15,8 @@ interface RequestPayload {
 
 interface Recruiter {
   token: string;
-  FirstName: string;
-  LastName: string;
+  firstName: string;
+  lastName: string;
   EmailId: string;
   status: string;
 }
@@ -32,6 +32,33 @@ interface RecruiterDetailResponse {
     EmailIdPersonal: string;
   };
 }
+
+interface SaveRecruiterPayload {
+  RequestMap: {
+    token: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    address: string;
+    mobileNoPersonal: string;
+    mobileNoOfficial: string;
+    dateOfBirth: string;
+    gender: string;
+    bankName: string;
+    bankBranch: string;
+    accountNo: string;
+    ifscCode: string;
+    panNumber: string;
+    aadhaarNumber: string;
+    previousCompanyName: string;
+    previousJobTitle: string;
+    totalExp: string;
+    totalRecruitmentExp: string;
+    lastJoinDate: string;
+    lastWorkingDate: string;
+  };
+}
+
 
 // API to add a recruiter for onboarding form
 export const addRecruiter = async (payload: RequestPayload): Promise<ApiResponse> => {
@@ -90,6 +117,28 @@ export const getRecruiterByToken = async (token: string): Promise<RecruiterDetai
     if (axios.isAxiosError(error)) {
       console.error('Axios error:', error.response?.data || error.message);
       throw new Error(error.response?.data?.message || 'Failed to fetch recruiter details.');
+    } else if (error instanceof Error) {
+      console.error('General error:', error.message);
+      throw new Error(error.message);
+    } else {
+      console.error('Unknown error:', error);
+      throw new Error('An unknown error occurred.');
+    }
+  }
+};
+
+// API to save recruiter data
+export const saveRecruiter = async (payload: SaveRecruiterPayload): Promise<ApiResponse> => {
+  try {
+    const response = await axios.post<ApiResponse>(
+      'https://recruitmentsystem.onrender.com/api/recruiters/saveRecruiter',
+      payload
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || 'Failed to save recruiter details.');
     } else if (error instanceof Error) {
       console.error('General error:', error.message);
       throw new Error(error.message);
