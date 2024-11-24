@@ -29,8 +29,8 @@ const OnboardingList = () => {
         const data = await getAllRecruiters();
         const formattedData = data.map((recruiter) => ({
           id: recruiter.token,
-          firstName: recruiter.FirstName,
-          lastName: recruiter.LastName,
+          firstName: recruiter.firstName,
+          lastName: recruiter.lastName,
           email: recruiter.EmailId,
           status: recruiter.status === 'FILLED' ? 'Completed' : 'Not Filled',
         }));
