@@ -59,6 +59,32 @@ interface SaveRecruiterPayload {
   };
 }
 
+interface DisplayRecruiterResponse {
+  Data: {  
+    "lastName": string;
+    "previousCompanyName": string;
+    "address": string;
+    "mobileNoPersonal": string;
+    "education": string;
+    "gender": string;
+    "bankBranch": string;
+    "previousJobTitle": string;
+    "lastWorkingDate": string;
+    "dateOfBirth": string;
+    "bankName": string;
+    "panNumber": string;
+    "totalExp": string;
+    "firstName": string;
+    "lastJoinDate": string;
+    "aadhaarNumber": string;
+    "educationPercent": string;
+    "mobileNoOfficial": string;
+    "accountNo": string;
+    "emailIdPersonal": string;
+    "totalRecruitmentExp": string;
+    "ifscCode": string;
+  }
+}
 
 // API to add a recruiter for onboarding form
 export const addRecruiter = async (payload: RequestPayload): Promise<ApiResponse> => {
@@ -127,7 +153,7 @@ export const getRecruiterByToken = async (token: string): Promise<RecruiterDetai
   }
 };
 
-// API to save recruiter data
+// API to submit the recruiter onboarding form recruiter side
 export const saveRecruiter = async (payload: SaveRecruiterPayload): Promise<ApiResponse> => {
   try {
     const response = await axios.post<ApiResponse>(
@@ -139,6 +165,30 @@ export const saveRecruiter = async (payload: SaveRecruiterPayload): Promise<ApiR
     if (axios.isAxiosError(error)) {
       console.error('Axios error:', error.response?.data || error.message);
       throw new Error(error.response?.data?.message || 'Failed to save recruiter details.');
+    } else if (error instanceof Error) {
+      console.error('General error:', error.message);
+      throw new Error(error.message);
+    } else {
+      console.error('Unknown error:', error);
+      throw new Error('An unknown error occurred.');
+    }
+  }
+};
+
+// API to fetch recruiter onboarding details by token
+export const getRecruiterDetailsByToken = async (token: string): Promise<DisplayRecruiterResponse['Data']> => {
+  try {
+    const response = await axios.post<DisplayRecruiterResponse>(
+      'https://recruitmentsystem.onrender.com/api/recruiters/getFilledRecruiter',
+      {
+        RequestMap: { token },
+      }
+    );
+    return response.data.Data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || 'Failed to fetch recruiter details.');
     } else if (error instanceof Error) {
       console.error('General error:', error.message);
       throw new Error(error.message);

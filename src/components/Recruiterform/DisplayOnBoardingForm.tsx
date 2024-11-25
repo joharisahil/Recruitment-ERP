@@ -1,7 +1,70 @@
 import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb';
+import { useEffect, useState } from 'react';
+import { getRecruiterDetailsByToken } from '../../services/recruiterService';
+import axios from 'axios';
 
 const DisplayOnBoardingForm = () => {
+  const location = useLocation();
+  const [formData, setFormData] = useState({
+    lastName: '',
+    previousCompanyName: '',
+    address: '',
+    mobileNoPersonal: '',
+    education: '',
+    gender: '',
+    bankBranch: '',
+    previousJobTitle: '',
+    lastWorkingDate: '',
+    dateOfBirth: '',
+    bankName: '',
+    panNumber: '',
+    totalExp: '',
+    firstName: '',
+    lastJoinDate: '',
+    aadhaarNumber: '',
+    educationPercent: '',
+    mobileNoOfficial: '',
+    accountNo: '',
+    emailIdPersonal: '',
+    totalRecruitmentExp: '',
+    ifscCode: '',
+  });
+
+  useEffect(() => {
+    const fetchRecruiterDetails = async () => {
+      try {
+        // Extract token from URL
+        const params = new URLSearchParams(location.search);
+        const token = params.get('token');
+
+        if (token) {
+          // Fetch data using the API
+          const data = await getRecruiterDetailsByToken(token);
+          setFormData(data);
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error('Axios error:', error.response?.data || error.message);
+          alert(
+            error.response?.data?.message ||
+              'Failed to fetch recruiter details.',
+          );
+        } else if (error instanceof Error) {
+          // General JS error handling
+          console.error('Error:', error.message);
+          alert(error.message);
+        } else {
+          console.error('Unknown error occurred.');
+          alert('An unknown error occurred.');
+        }
+      }
+    };
+
+    fetchRecruiterDetails();
+  }, [location.search]);
+
   return (
     <>
       <Breadcrumb pageName="OnBoarding Details" />
@@ -30,6 +93,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your first name"
+                    value={formData.firstName || ''}
+                    readOnly
                     // value={form.firstName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'firstName', e.target.value)
@@ -45,6 +110,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your last name"
+                    value={formData.lastName || ''}
+                    readOnly
                     // value={form.lastName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'lastName', e.target.value)
@@ -62,6 +129,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your DOB"
+                    value={formData.dateOfBirth || ''}
+                    readOnly
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -73,6 +142,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your Gender"
+                    value={formData.gender || ''}
+                    readOnly
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -85,6 +156,8 @@ const DisplayOnBoardingForm = () => {
                 <input
                   type="text"
                   placeholder="Enter your address"
+                  value={formData.address || ''}
+                  readOnly
                   //   value={form.email}
                   //   onChange={(e) =>
                   //     handleInputChange(index, 'email', e.target.value)
@@ -100,7 +173,9 @@ const DisplayOnBoardingForm = () => {
                   </label>
                   <input
                     type="email"
-                    placeholder="Enter your first name"
+                    placeholder="Enter your email"
+                    value={formData.emailIdPersonal || ''}
+                    readOnly
                     // value={form.firstName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'firstName', e.target.value)
@@ -115,7 +190,9 @@ const DisplayOnBoardingForm = () => {
                   </label>
                   <input
                     type="number"
-                    placeholder="Enter your last name"
+                    placeholder="Enter your Mobile Number"
+                    value={formData.mobileNoPersonal || ''}
+                    readOnly
                     // value={form.lastName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'lastName', e.target.value)
@@ -133,6 +210,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your bank name"
+                    value={formData.bankName || ''}
+                    readOnly
                     // value={form.firstName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'firstName', e.target.value)
@@ -148,6 +227,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your bank branch"
+                    value={formData.bankBranch || ''}
+                    readOnly
                     // value={form.lastName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'lastName', e.target.value)
@@ -165,6 +246,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your account number"
+                    value={formData.accountNo || ''}
+                    readOnly
                     // value={form.firstName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'firstName', e.target.value)
@@ -180,6 +263,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your IFSC code"
+                    value={formData.ifscCode || ''}
+                    readOnly
                     // value={form.lastName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'lastName', e.target.value)
@@ -197,6 +282,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="number"
                     placeholder="Enter your adhaar number"
+                    value={formData.aadhaarNumber || ''}
+                    readOnly
                     // value={form.firstName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'firstName', e.target.value)
@@ -212,6 +299,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your pan number"
+                    value={formData.panNumber || ''}
+                    readOnly
                     // value={form.lastName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'lastName', e.target.value)
@@ -229,6 +318,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your previous company name"
+                    value={formData.previousCompanyName || ''}
+                    readOnly
                     // value={form.firstName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'firstName', e.target.value)
@@ -244,6 +335,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your previous job title"
+                    value={formData.previousJobTitle || ''}
+                    readOnly
                     // value={form.lastName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'lastName', e.target.value)
@@ -259,8 +352,10 @@ const DisplayOnBoardingForm = () => {
                     Total Experience
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Enter your total experience"
+                    value={formData.totalExp || ''}
+                    readOnly
                     // value={form.firstName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'firstName', e.target.value)
@@ -274,8 +369,10 @@ const DisplayOnBoardingForm = () => {
                     Total Recruitement Experience
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Enter your total recruitement experience"
+                    value={formData.totalRecruitmentExp || ''}
+                    readOnly
                     // value={form.lastName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'lastName', e.target.value)
@@ -293,6 +390,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your joining date with last employer"
+                    value={formData.lastJoinDate || ''}
+                    readOnly
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -304,6 +403,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your last working date with last employer"
+                    value={formData.lastWorkingDate || ''}
+                    readOnly
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -317,6 +418,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your highest education"
+                    value={formData.education || ''}
+                    readOnly
                     // value={form.firstName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'firstName', e.target.value)
@@ -332,6 +435,8 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your highest education percentage"
+                    value={formData.educationPercent || ''}
+                    readOnly
                     // value={form.lastName}
                     // onChange={(e) =>
                     //   handleInputChange(index, 'lastName', e.target.value)
@@ -431,3 +536,44 @@ const DisplayOnBoardingForm = () => {
 };
 
 export default DisplayOnBoardingForm;
+
+// const [displayRecruiterData, setDisplayRecruiterData] = useState({
+//   firstName: '',
+//   lastName: '',
+//   email: '',
+//   address: '',
+//   mobileNoPersonal: '',
+//   mobileNoOfficial: '',
+//   dateOfBirth: '',
+//   gender: '',
+//   bankName: '',
+//   bankBranch: '',
+//   accountNo: '',
+//   ifscCode: '',
+//   panNumber: '',
+//   aadhaarNumber: '',
+//   previousCompanyName: '',
+//   previousJobTitle: '',
+//   totalExp: '',
+//   totalRecruitmentExp: '',
+//   lastJoinDate: '',
+//   lastWorkingDate: '',
+// });
+// const location = useLocation();
+// const token = new URLSearchParams(location.search).get('token');
+
+// useEffect(() => {
+//   if (token) {
+//     const fetchRecruiterDetail = async () => {
+//       try {
+//         const response = await getRecruiterDetailByToken(token);
+//         const { lastName } = response.Data;
+//         console.log('Data', response);
+//       } catch (error) {
+//         console.error('Failed to fetch recruiter details:', error);
+//       }
+//     };
+
+//     fetchRecruiterDetail();
+//   }
+// }, [token]);
