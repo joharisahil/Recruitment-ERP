@@ -175,7 +175,7 @@ export const saveRecruiter = async (payload: SaveRecruiterPayload): Promise<ApiR
   }
 };
 
-// API to fetch recruiter onboarding details by token
+// API to fetch recruiter onboarding details by token to display on DisplayOnboardingForm
 export const getRecruiterDetailsByToken = async (token: string): Promise<DisplayRecruiterResponse['Data']> => {
   try {
     const response = await axios.post<DisplayRecruiterResponse>(
