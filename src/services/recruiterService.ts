@@ -56,6 +56,8 @@ interface SaveRecruiterPayload {
     totalRecruitmentExp: string;
     lastJoinDate: string;
     lastWorkingDate: string;
+    education: string;
+    educationPercent:string;
   };
 }
 

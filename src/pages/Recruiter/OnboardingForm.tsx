@@ -34,6 +34,8 @@ const OnboardingForm = () => {
     totalRecruitmentExp: '',
     lastJoinDate: '',
     lastWorkingDate: '',
+    education: '',
+    educationPercent: '',
   });
 
   const location = useLocation();
@@ -574,6 +576,12 @@ const OnboardingForm = () => {
                     <select
                       className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                       defaultValue="" // Default value for placeholder
+                      onChange={(e) =>
+                        setRecruiterSubmitData({
+                          ...recruiterSubmitData,
+                          education: e.target.value,
+                        })
+                      }
                     >
                       <option value="" disabled>
                         Select your Education
@@ -591,6 +599,12 @@ const OnboardingForm = () => {
                     <input
                       type="number"
                       placeholder="Enter your percentage"
+                      onChange={(e) =>
+                        setRecruiterSubmitData({
+                          ...recruiterSubmitData,
+                          educationPercent: e.target.value,
+                        })
+                      }
                       className="w-full rounded border-[1.5px] border-stroke py-3 px-5 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-white"
                     />
                   </div>
