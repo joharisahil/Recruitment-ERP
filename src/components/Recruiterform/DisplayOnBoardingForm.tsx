@@ -2,8 +2,12 @@ import { NavLink } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb';
 import { useEffect, useState } from 'react';
-import { getRecruiterDetailsByToken } from '../../services/recruiterService';
+import {
+  getRecruiterDetailsByToken,
+  onBoardRecruiter,
+} from '../../services/recruiterService';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const DisplayOnBoardingForm = () => {
   const location = useLocation();
@@ -30,6 +34,7 @@ const DisplayOnBoardingForm = () => {
     emailIdPersonal: '',
     totalRecruitmentExp: '',
     ifscCode: '',
+    emailIdOfficial: '', // User-provided field
   });
 
   useEffect(() => {
@@ -45,6 +50,7 @@ const DisplayOnBoardingForm = () => {
           setFormData(data);
         }
       } catch (error) {
+        // Narrow the type of error to handle it safely
         if (axios.isAxiosError(error)) {
           console.error('Axios error:', error.response?.data || error.message);
           alert(
@@ -52,7 +58,6 @@ const DisplayOnBoardingForm = () => {
               'Failed to fetch recruiter details.',
           );
         } else if (error instanceof Error) {
-          // General JS error handling
           console.error('Error:', error.message);
           alert(error.message);
         } else {
@@ -64,6 +69,63 @@ const DisplayOnBoardingForm = () => {
 
     fetchRecruiterDetails();
   }, [location.search]);
+
+  const handleInputChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleOnBoard = async () => {
+    try {
+      // Extract token from the URL
+      const params = new URLSearchParams(location.search);
+      const token = params.get('token');
+
+      // Validate token and emailIdOfficial
+      if (!token) {
+        toast.error('Token is missing from the URL.');
+        return;
+      }
+
+      if (!formData.emailIdOfficial) {
+        toast.error('Please provide the official email address.');
+        return;
+      }
+
+      // Prepare payload
+      const payload = {
+        RequestMap: {
+          token,
+          EmailIdOfficial: formData.emailIdOfficial,
+        },
+      };
+
+      // Call the onBoardRecruiter API function
+      const response = await onBoardRecruiter(payload);
+
+      // Handle success response
+      toast.success(
+        response.SuccessMessage || 'Recruiter On-Boarded successfully',
+      );
+    } catch (error) {
+      // Handle errors safely
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error:', error.response?.data || error.message);
+        toast.error(
+          error.response?.data?.message || 'Failed to onboard recruiter.',
+        );
+      } else if (error instanceof Error) {
+        console.error('Error:', error.message);
+        toast.error(error.message);
+      } else {
+        console.error('Unknown error occurred.');
+        toast.error('An unknown error occurred.');
+      }
+    }
+  };
 
   return (
     <>
@@ -505,6 +567,13 @@ const DisplayOnBoardingForm = () => {
                 <input
                   type="email"
                   placeholder="Enter official email"
+                  value={formData.emailIdOfficial || ''} // Bind state
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      emailIdOfficial: e.target.value, // Update state
+                    }))
+                  }
                   //   value={form.email}
                   //   onChange={(e) =>
                   //     handleInputChange(index, 'email', e.target.value)
@@ -516,6 +585,7 @@ const DisplayOnBoardingForm = () => {
                 <NavLink
                   to="/recruiter-master/onboard-recruiter"
                   className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
+                  onClick={handleOnBoard}
                   // onClick={() => toggleFormView(index)}
                 >
                   OnBoard

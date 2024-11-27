@@ -85,8 +85,17 @@ interface DisplayRecruiterResponse {
     "emailIdPersonal": string;
     "totalRecruitmentExp": string;
     "ifscCode": string;
+    "emailIdOfficial": string;
   }
 }
+
+interface OnboardingPayload {
+  RequestMap:{  
+    token: string;
+    EmailIdOfficial: string;
+  }
+}
+
 
 // API to add a recruiter for onboarding form
 export const addRecruiter = async (payload: RequestPayload): Promise<ApiResponse> => {
@@ -191,6 +200,27 @@ export const getRecruiterDetailsByToken = async (token: string): Promise<Display
     if (axios.isAxiosError(error)) {
       console.error('Axios error:', error.response?.data || error.message);
       throw new Error(error.response?.data?.message || 'Failed to fetch recruiter details.');
+    } else if (error instanceof Error) {
+      console.error('General error:', error.message);
+      throw new Error(error.message);
+    } else {
+      console.error('Unknown error:', error);
+      throw new Error('An unknown error occurred.');
+    }
+  }
+};
+
+export const onBoardRecruiter = async (payload: OnboardingPayload): Promise<ApiResponse> => {
+  try {
+    const response = await axios.post<ApiResponse>(
+      'https://recruitmentsystem.onrender.com/api/admin/onBoard',
+      payload
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || 'Failed to save recruiter details.');
     } else if (error instanceof Error) {
       console.error('General error:', error.message);
       throw new Error(error.message);
