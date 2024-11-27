@@ -583,7 +583,7 @@ const DisplayOnBoardingForm = () => {
               </div>
               <div className="flex gap-4 mt-4">
                 <NavLink
-                  to="/recruiter-master/onboard-recruiter"
+                  to="/recruiter-master/onboarding-list"
                   className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
                   onClick={handleOnBoard}
                   // onClick={() => toggleFormView(index)}

@@ -230,3 +230,16 @@ export const onBoardRecruiter = async (payload: OnboardingPayload): Promise<ApiR
     }
   }
 };
+
+export const fetchRecruiters = async () => {
+  try {
+    const response = await axios.get('https://recruitmentsystem.onrender.com/api/admin/getAllOnBoardRecruiters');
+    if (response.data && response.data.Data) {
+      return response.data.Data; // Returning the "Data" array from the API response
+    } else {
+      throw new Error('No data found in API response');
+    }
+  } catch (error: any) {
+    throw new Error(error.message || 'Failed to fetch recruiters');
+  }
+};
