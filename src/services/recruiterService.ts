@@ -9,7 +9,7 @@ interface RequestPayload {
   RequestMap: {
     firstName: string;
     lastName: string;
-    emailId: string;
+    email: string;
   };
 }
 
@@ -17,7 +17,7 @@ interface Recruiter {
   token: string;
   firstName: string;
   lastName: string;
-  EmailId: string;
+  email: string;
   status: string;
 }
 
@@ -29,7 +29,7 @@ interface RecruiterDetailResponse {
   Data: {
     firstName: string;
     lastName: string;
-    EmailIdPersonal: string;
+    email: string;
   };
 }
 
@@ -82,7 +82,7 @@ interface DisplayRecruiterResponse {
     "educationPercent": string;
     "mobileNoOfficial": string;
     "accountNo": string;
-    "emailIdPersonal": string;
+    "email": string;
     "totalRecruitmentExp": string;
     "ifscCode": string;
     "emailIdOfficial": string;

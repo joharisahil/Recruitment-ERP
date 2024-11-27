@@ -57,7 +57,7 @@ const OnboardRecruiter = () => {
         RequestMap: {
           firstName: form.firstName,
           lastName: form.lastName,
-          emailId: form.email,
+          email: form.email,
         },
       };
 

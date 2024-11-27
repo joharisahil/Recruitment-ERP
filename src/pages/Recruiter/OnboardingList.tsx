@@ -31,7 +31,7 @@ const OnboardingList = () => {
           id: recruiter.token,
           firstName: recruiter.firstName,
           lastName: recruiter.lastName,
-          email: recruiter.EmailId,
+          email: recruiter.email,
           status: recruiter.status === 'FILLED' ? 'Completed' : 'Not Filled',
         }));
         setOnboardingForms(formattedData);

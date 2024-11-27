@@ -31,7 +31,7 @@ const DisplayOnBoardingForm = () => {
     educationPercent: '',
     mobileNoOfficial: '',
     accountNo: '',
-    emailIdPersonal: '',
+    email: '',
     totalRecruitmentExp: '',
     ifscCode: '',
     emailIdOfficial: '', // User-provided field
@@ -236,7 +236,7 @@ const DisplayOnBoardingForm = () => {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    value={formData.emailIdPersonal || ''}
+                    value={formData.email || ''}
                     readOnly
                     // value={form.firstName}
                     // onChange={(e) =>

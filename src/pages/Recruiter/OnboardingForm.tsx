@@ -4,6 +4,7 @@ import {
   getRecruiterByToken,
   saveRecruiter,
 } from '../../services/recruiterService';
+import { toast } from 'react-toastify';
 
 const OnboardingForm = () => {
   const [submitForm, setSubmitForm] = useState(false);
@@ -50,20 +51,20 @@ const OnboardingForm = () => {
       const fetchRecruiterDetails = async () => {
         try {
           const response = await getRecruiterByToken(token);
-          const { firstName, lastName, EmailIdPersonal } = response.Data;
+          const { firstName, lastName, email } = response.Data;
 
           // Update both recruiterData and recruiterSubmitData
           setRecruiterData({
             firstName,
             lastName,
-            email: EmailIdPersonal,
+            email: email,
           });
 
           setRecruiterSubmitData((prev) => ({
             ...prev,
             firstName,
             lastName,
-            email: EmailIdPersonal,
+            email: email,
           }));
         } catch (error) {
           console.error('Failed to fetch recruiter details:', error);
@@ -114,7 +115,9 @@ const OnboardingForm = () => {
 
     try {
       const response = await saveRecruiter(payload);
-      alert(response.SuccessMessage); // Show success message
+      toast.success(
+        response.SuccessMessage || 'Form Submitted Successfully',
+      );
       setSubmitForm(true);
     } catch (error) {
       console.error('Failed to save recruiter:', error);
