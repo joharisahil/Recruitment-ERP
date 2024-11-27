@@ -25,6 +25,7 @@ import OnboardingList from './pages/Recruiter/OnboardingList';
 import AllRecruiterDetails from './pages/Recruiter/AllRecruiterDetails';
 import AddNewClient from './pages/Clientmaster/AddNewClient';
 import ClientDetails from './pages/Clientmaster/ClientDetails';
+import DisplayRecruiterDetails from './components/Recruiterform/DisplayRecruiterDetails';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -110,6 +111,15 @@ function App() {
                 <>
                   <PageTitle title="OnBoarding Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                   <OnboardingList />
+                </>
+              }
+            />
+            <Route
+              path="/recruiter-master/recruiter-details/display-recruiter-details"
+              element={
+                <>
+                  <PageTitle title="Recruiter Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <DisplayRecruiterDetails />
                 </>
               }
             />

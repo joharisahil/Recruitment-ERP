@@ -121,7 +121,7 @@ const AllRecruiterDetails = () => {
                 <p>Email: {recruiter.EmailId_Official}</p>
                 <div className="flex gap-4 mt-4 justify-center md:justify-start">
                   <NavLink
-                    to={`/recruiter-master/onboarding-list/display-onboarding-form?token=${recruiter.token}`}
+                    to={`/recruiter-master/recruiter-details/display-recruiter-details?token=${recruiter.token}`}
                     className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90"
                   >
                     View Details
