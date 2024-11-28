@@ -79,7 +79,7 @@ const DisplayRecruiterDetails = () => {
           </div>
           {/* Close Button */}
           <NavLink
-            to="/recruiter-master/onboarding-list"
+            to="/recruiter-master/recruiter-details"
             className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 text-2xl p-2"
           >
             &times;
