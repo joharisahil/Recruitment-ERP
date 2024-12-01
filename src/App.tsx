@@ -26,6 +26,7 @@ import AllRecruiterDetails from './pages/Recruiter/AllRecruiterDetails';
 import AddNewClient from './pages/Clientmaster/AddNewClient';
 import ClientDetails from './pages/Clientmaster/ClientDetails';
 import DisplayRecruiterDetails from './components/Recruiterform/DisplayRecruiterDetails';
+import DisplayClientDetails from './components/ClientForm/DisplayClientDetails';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -138,6 +139,15 @@ function App() {
                 <>
                   <PageTitle title="Client Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                   <ClientDetails />
+                </>
+              }
+            />
+            <Route
+              path="/client-master/client-details/display-client-details"
+              element={
+                <>
+                  <PageTitle title="Client Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <DisplayClientDetails />
                 </>
               }
             />
