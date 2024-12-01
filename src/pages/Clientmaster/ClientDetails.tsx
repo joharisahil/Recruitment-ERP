@@ -14,15 +14,15 @@ interface Client {
 }
 
 const ClientDetails = () => {
-  const [Clients, setClients] = useState<Client[]>([]); // State for recruiters
+  const [Clients, setClients] = useState<Client[]>([]); // State for clients
   const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const [filter, setFilter] = useState('all'); // State for filter type
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState<string | null>(null); // Error state
 
-  // Fetch recruiters on component mount
+  // Fetch clients on component mount
   useEffect(() => {
-    const fetchRecruiters = async () => {
+    const fetchClients = async () => {
       try {
         const clients = await getAllClients();
         setClients(clients);
@@ -33,10 +33,10 @@ const ClientDetails = () => {
       }
     };
 
-    fetchRecruiters();
+    fetchClients();
   }, []);
 
-  // Filter recruiters based on search query and filter type
+  // Filter clients based on search query and filter type
   const filteredClients = Clients.filter((clients) => {
     const searchString = searchQuery.toLowerCase();
     if (filter === 'all') {
@@ -90,7 +90,7 @@ const ClientDetails = () => {
       </div>
 
       <div className="grid grid-cols-1 2xl:grid-cols-2 3xl:grid-cols-3 gap-6">
-        {/* Loop through the filtered recruiters and display each one */}
+        {/* Loop through the filtered clients and display each one */}
         {filteredClients.map((client) => (
           <div
             key={client.clientId}
@@ -107,7 +107,7 @@ const ClientDetails = () => {
               &times;
             </button>
 
-            {/* Recruiter Summary Section */}
+            {/* Client Summary Section */}
             <div className="p-6.5">
               <h3 className="font-medium text-black dark:text-white">
                 Client Summary
