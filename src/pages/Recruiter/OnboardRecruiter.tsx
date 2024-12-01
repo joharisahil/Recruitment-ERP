@@ -21,6 +21,7 @@ const OnboardRecruiter = () => {
   const [recruiterForms, setRecruiterForms] = useState<RecruiterForm[]>([
     { firstName: '', lastName: '', email: '', submitted: false },
   ]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (
     index: number,
@@ -48,6 +49,7 @@ const OnboardRecruiter = () => {
 
   const handleSubmit = async (index: number, event: React.FormEvent) => {
     event.preventDefault();
+    setIsSubmitting(true);
 
     const form = recruiterForms[index];
 
@@ -104,6 +106,8 @@ const OnboardRecruiter = () => {
           hideProgressBar: true,
         });
       }
+    } finally {
+      setIsSubmitting(false); // Stop loading spinner
     }
   };
 
@@ -184,9 +188,13 @@ const OnboardRecruiter = () => {
                   <button
                     type="submit"
                     // onClick={copyToClipboard}
-                    className="w-full rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                    className="w-full rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 flex justify-center items-center "
                   >
-                    Get Link
+                    {isSubmitting ? (
+                      <div className="loader border-t-transparent border-4 border-white w-5 h-5 rounded-full animate-spin"></div>
+                    ) : (
+                      'Get Link'
+                    )}
                   </button>
                 </div>
               </form>

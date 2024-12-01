@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { NavLink } from 'react-router-dom';
 import { fetchRecruiters } from '../../services/recruiterService';
+import Loader from '../../common/Loader';
 
 const AllRecruiterDetails = () => {
   const [recruiters, setRecruiters] = useState([]); // State to store recruiter data
@@ -27,7 +28,7 @@ const AllRecruiterDetails = () => {
 
   // Handle loading state
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   // Handle error state
