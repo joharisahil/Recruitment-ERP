@@ -1,125 +1,188 @@
-import { useState } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import React, { useState } from 'react';
 import { createClient } from '../../services/clientService';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { toast } from 'react-toastify';
 
-const AddNewClient = () => {
+interface Profile {
+  profile: string;
+  joiningPoint: string;
+  location: string;
+  interviewType: string;
+  billingPoint: string;
+  lockInPeriod: string;
+  address: string;
+  spoc: string;
+  accountManager: string;
+  interviewTiming: string;
+  hiringParameters: string;
+}
+
+const OnboardClientForm = () => {
   const [clientName, setClientName] = useState('');
-  const [profiles, setProfiles] = useState([
-    { profile: '', pay: '', billingPoint: '', lockInPeriod: '' },
+  const [profiles, setProfiles] = useState<Profile[]>([
+    {
+      profile: '',
+      joiningPoint: '',
+      location: '',
+      interviewType: '',
+      billingPoint: '',
+      lockInPeriod: '',
+      address: '',
+      spoc: '',
+      accountManager: '',
+      interviewTiming: '',
+      hiringParameters: '',
+    },
   ]);
-  const [locations, setLocations] = useState([
-    { location: '', interviewType: '', address: '' },
-  ]);
-  const [loading, setLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, boolean>[]
+  >([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleProfileChange = (
+    index: number,
+    value: string,
+    field: keyof Profile,
+  ) => {
+    const updatedProfiles = [...profiles];
+    updatedProfiles[index][field] = value;
+    setProfiles(updatedProfiles);
+  };
 
   const handleAddProfile = () => {
     setProfiles([
       ...profiles,
-      { profile: '', pay: '', billingPoint: '', lockInPeriod: '' },
+      {
+        profile: '',
+        joiningPoint: '',
+        location: '',
+        interviewType: '',
+        billingPoint: '',
+        lockInPeriod: '',
+        address: '',
+        spoc: '',
+        accountManager: '',
+        interviewTiming: '',
+        hiringParameters: '',
+      },
     ]);
   };
 
-  const handleAddLocation = () => {
-    setLocations([
-      ...locations,
-      { location: '', interviewType: '', address: '' },
-    ]);
-  };
-
-  const handleProfileChange = (
-    index: number,
-    field: keyof (typeof profiles)[0],
-    value: string,
-  ) => {
-    const updatedProfiles = [...profiles];
-    updatedProfiles[index][field] = value; // Update profile field value
+  const handleRemoveProfile = (index: number) => {
+    const updatedProfiles = profiles.filter((_, i) => i !== index);
     setProfiles(updatedProfiles);
+    const updatedErrors = validationErrors.filter((_, i) => i !== index);
+    setValidationErrors(updatedErrors);
   };
 
-  const handleLocationChange = (
-    index: number,
-    field: keyof (typeof locations)[0],
-    value: string,
-  ) => {
-    const updatedLocations = [...locations];
-    updatedLocations[index][field] = value; // Update location field value
-    setLocations(updatedLocations);
-  };
-
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    const validProfiles = profiles
-      .filter(({ profile }) => profile.trim() !== '')
-      .map(({ profile, pay, billingPoint, lockInPeriod }) => ({
-        profile,
-        billingPoint: parseFloat(billingPoint) || 0,
-        lockInPeriod: parseInt(lockInPeriod) || 0,
-        payPoint: parseFloat(pay) || 0,
-      }));
+    let hasValidationErrors = false;
 
-    const validLocations = locations
-      .filter(({ location }) => location.trim() !== '')
-      .map(({ location, interviewType, address }) => ({
-        location,
-        interviewType,
-        address,
-      }));
+    // Validate client name
+    if (!clientName.trim()) {
+      hasValidationErrors = true;
+    }
 
-    const formData = {
-      username: clientName.trim(),
-      activeFlag: 'Y',
-      roles: validProfiles,
-      locations: validLocations,
+    // Validate profiles
+    const profileErrors = profiles.map((entry) => {
+      const errors: Record<string, boolean> = {};
+      const mandatoryFields = [
+        'profile',
+        'joiningPoint',
+        'location',
+        'interviewType',
+        'billingPoint',
+        'lockInPeriod',
+        'address',
+        'spoc',
+        'accountManager',
+        'interviewTiming',
+      ];
+
+      const isPartiallyFilled = Object.values(entry).some(
+        (value) => value.trim() !== '',
+      );
+      if (isPartiallyFilled) {
+        mandatoryFields.forEach((field) => {
+          if (!entry[field as keyof Profile]?.trim()) {
+            errors[field] = true;
+            hasValidationErrors = true;
+          }
+        });
+      }
+
+      return errors;
+    });
+
+    setValidationErrors(profileErrors);
+
+    if (hasValidationErrors) {
+      setIsSubmitting(false);
+      return;
+    }
+
+    const nonEmptyProfiles = profiles.filter((entry) =>
+      Object.values(entry).some((value) => value.trim() !== ''),
+    );
+
+    const payload = {
+      RequestMap: {
+        clientName: clientName.trim(),
+        activeFlag: 'Y',
+        Profiles: nonEmptyProfiles.map((entry) => ({
+          ...entry,
+          hiringParameters: entry.hiringParameters || '',
+        })),
+      },
     };
 
-    if (!formData.username) {
-      toast.error('Client Name is required.');
-      return;
-    }
-
-    if (formData.roles.length === 0) {
-      toast.error('At least one valid profile is required.');
-      return;
-    }
-
-    if (formData.locations.length === 0) {
-      toast.error('At least one valid location is required.');
-      return;
-    }
-
     try {
-      setLoading(true);
-      const response = await createClient(formData);
-      toast.success(response.SuccessMessage || 'Client created successfully.');
+      const result = await createClient(payload);
+      toast.success(result.SuccessMessage || 'Client created successfully!'); 
+      // Reset the form after successful submission
       setClientName('');
       setProfiles([
-        { profile: '', pay: '', billingPoint: '', lockInPeriod: '' },
+        {
+          profile: '',
+          joiningPoint: '',
+          location: '',
+          interviewType: '',
+          billingPoint: '',
+          lockInPeriod: '',
+          address: '',
+          spoc: '',
+          accountManager: '',
+          interviewTiming: '',
+          hiringParameters: '',
+        },
       ]);
-      setLocations([{ location: '', interviewType: '', address: '' }]);
+      setValidationErrors([]); // Clear validation errors
     } catch (error: any) {
-      alert(error.message);
+      toast.error(
+        error.message || 'An error occurred while creating the client.',
+      ); // Display error message
     } finally {
-      setLoading(false);
+      setIsSubmitting(false); // Stop loading spinner
     }
   };
 
   return (
     <>
-      <Breadcrumb pageName="OnBoard Recruiter" />
+      <Breadcrumb pageName="OnBoard Client" />
       <div className="flex flex-col gap-9">
         <div className="relative rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Recruiter OnBoarding Form
+              Client Onboarding Form
             </h3>
           </div>
-          <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 text-2xl p-2">
-            &times;
-          </button>
-          <form onSubmit={handleSubmit}>
+
+          <form onSubmit={handleFormSubmit}>
             <div className="p-6.5">
+              {/* Client Name */}
               <div className="mb-4.5">
                 <label className="mb-2.5 block text-black dark:text-white">
                   Client Name
@@ -129,127 +192,80 @@ const AddNewClient = () => {
                   placeholder="Enter client name"
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className={`w-full rounded border-[1.5px] ${
+                    !clientName.trim() && validationErrors.length > 0
+                      ? 'border-red-500 dark:border-red-500'
+                      : 'border-stroke dark:border-form-strokedark'
+                  } bg-transparent py-3 px-5 text-black dark:text-white outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:focus:border-primary`}
                 />
               </div>
-              <div className="mb-4.5">
-                <label className="mb-2.5 block text-black dark:text-white">
-                  Profiles
-                </label>
-                {profiles.map((entry, index) => (
-                  <div key={index} className="mb-2">
-                    <input
-                      type="text"
-                      placeholder={`Profile ${index + 1}`}
-                      value={entry.profile}
-                      onChange={(e) =>
-                        handleProfileChange(index, 'profile', e.target.value)
-                      }
-                      className="mb-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Pay Point"
-                      value={entry.pay}
-                      onChange={(e) =>
-                        handleProfileChange(index, 'pay', e.target.value)
-                      }
-                      className="mb-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Billing Point"
-                      value={entry.billingPoint}
-                      onChange={(e) =>
-                        handleProfileChange(
-                          index,
-                          'billingPoint',
-                          e.target.value,
-                        )
-                      }
-                      className="mb-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Lock-In Period"
-                      value={entry.lockInPeriod}
-                      onChange={(e) =>
-                        handleProfileChange(
-                          index,
-                          'lockInPeriod',
-                          e.target.value,
-                        )
-                      }
-                      className="mb-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary"
-                    />
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={handleAddProfile}
-                  className="mt-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
-                >
-                  Add Profile
-                </button>
-              </div>
 
-              <div className="mb-4.5">
-                <label className="mb-2.5 block text-black dark:text-white">
-                  Locations
-                </label>
-                {locations.map((entry, index) => (
-                  <div key={index} className="mb-2">
-                    <input
-                      type="text"
-                      placeholder={`Location ${index + 1}`}
-                      value={entry.location}
-                      onChange={(e) =>
-                        handleLocationChange(index, 'location', e.target.value)
-                      }
-                      className="mb-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary"
-                    />
-                    <select
-                      value={entry.interviewType}
-                      onChange={(e) =>
-                        handleLocationChange(
-                          index,
-                          'interviewType',
-                          e.target.value,
-                        )
-                      }
-                      className="mb-2 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary"
+              {/* Profile Fields */}
+              {profiles.map((entry, index) => (
+                <div
+                  key={index}
+                  className="mb-4.5 border-b pb-4 last:border-none"
+                >
+                  <h4 className="mb-2.5 block font-medium text-black dark:text-white">
+                    Profile {index + 1}
+                  </h4>
+                  {Object.keys(entry).map((key) => {
+                    const isOptional = key === 'hiringParameters';
+                    const placeholder = isOptional ? 'Optional' : 'Required';
+                    const errorClass = validationErrors[index]?.[key]
+                      ? 'border-red-500'
+                      : 'border-stroke';
+
+                    return (
+                      <div key={key} className="mb-2">
+                        <input
+                          type="text"
+                          placeholder={`${key} (${placeholder})`}
+                          value={entry[key as keyof Profile]}
+                          onChange={(e) =>
+                            handleProfileChange(
+                              index,
+                              e.target.value,
+                              key as keyof Profile,
+                            )
+                          }
+                          className={`w-full rounded border-[1.5px] ${errorClass} bg-transparent py-3 px-5 text-black dark:text-white outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input dark:focus:border-primary`}
+                        />
+                      </div>
+                    );
+                  })}
+                  {profiles.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveProfile(index)}
+                      className="mt-2 text-red-500 hover:underline"
                     >
-                      <option value="">Select Interview Type</option>
-                      <option value="Online">Online</option>
-                      <option value="Offline">Offline</option>
-                      <option value="Hybrid">Hybrid</option>
-                    </select>
-                    <input
-                      type="text"
-                      placeholder={`Address ${index + 1}`}
-                      value={entry.address}
-                      onChange={(e) =>
-                        handleLocationChange(index, 'address', e.target.value)
-                      }
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary"
-                    />
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={handleAddLocation}
-                  className="mt-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
-                >
-                  Add Location
-                </button>
-              </div>
+                      Remove Profile
+                    </button>
+                  )}
+                </div>
+              ))}
 
+              {/* Add Profile Button */}
+              <button
+                type="button"
+                onClick={handleAddProfile}
+                className="mb-4 w-full rounded bg-primary py-3 text-white hover:bg-primary-dark"
+              >
+                Add Profile
+              </button>
+
+              {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
-                disabled={loading}
+                className="w-full rounded bg-primary py-3 text-white flex justify-center items-center hover:bg-primary-dark"
+                disabled={isSubmitting} // Disable button during submission
               >
-                {loading ? 'Submitting...' : 'Add Client'}
+                {isSubmitting ? (
+                  <div className="loader border-t-transparent border-4 border-white w-5 h-5 rounded-full animate-spin"></div>
+                ) : (
+                  'Submit'
+                )}
               </button>
             </div>
           </form>
@@ -259,4 +275,4 @@ const AddNewClient = () => {
   );
 };
 
-export default AddNewClient;
+export default OnboardClientForm;
