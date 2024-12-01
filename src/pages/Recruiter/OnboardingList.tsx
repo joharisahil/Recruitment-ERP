@@ -54,7 +54,7 @@ const OnboardingList = () => {
     //for getting the status change on the UI without refresh of the page
     // const interval = setInterval(() => {
     //   fetchData();
-    // }, 10000); // Poll every 10 seconds
+    // }, 1000); // Poll every 10 seconds
 
     // return () => clearInterval(interval);
   }, []);
