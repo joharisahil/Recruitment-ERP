@@ -14,7 +14,7 @@ interface Profile {
   spoc: string;
   accountManager: string;
   interviewTiming: string;
-  hiringParameters: string;
+  hiringParameter: string;
 }
 
 const OnboardClientForm = () => {
@@ -31,7 +31,7 @@ const OnboardClientForm = () => {
       spoc: '',
       accountManager: '',
       interviewTiming: '',
-      hiringParameters: '',
+      hiringParameter: '',
     },
   ]);
   const [validationErrors, setValidationErrors] = useState<
@@ -63,7 +63,7 @@ const OnboardClientForm = () => {
         spoc: '',
         accountManager: '',
         interviewTiming: '',
-        hiringParameters: '',
+        hiringParameter: '',
       },
     ]);
   };
@@ -134,14 +134,14 @@ const OnboardClientForm = () => {
         activeFlag: 'Y',
         Profiles: nonEmptyProfiles.map((entry) => ({
           ...entry,
-          hiringParameters: entry.hiringParameters || '',
+          hiringParameters: entry.hiringParameter || '',
         })),
       },
     };
 
     try {
       const result = await createClient(payload);
-      toast.success(result.SuccessMessage || 'Client created successfully!'); 
+      toast.success(result.SuccessMessage || 'Client created successfully!');
       // Reset the form after successful submission
       setClientName('');
       setProfiles([
@@ -156,7 +156,7 @@ const OnboardClientForm = () => {
           spoc: '',
           accountManager: '',
           interviewTiming: '',
-          hiringParameters: '',
+          hiringParameter: '',
         },
       ]);
       setValidationErrors([]); // Clear validation errors
@@ -210,11 +210,11 @@ const OnboardClientForm = () => {
                     Profile {index + 1}
                   </h4>
                   {Object.keys(entry).map((key) => {
-                    const isOptional = key === 'hiringParameters';
+                    const isOptional = key === 'hiringParameter';
                     const placeholder = isOptional ? 'Optional' : 'Required';
                     const errorClass = validationErrors[index]?.[key]
                       ? 'border-red-500'
-                      : 'border-stroke';
+                      : 'border-stroke dark:border-form-strokedark';
 
                     return (
                       <div key={key} className="mb-2">
