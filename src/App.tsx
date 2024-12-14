@@ -27,6 +27,8 @@ import AddNewClient from './pages/Clientmaster/AddNewClient';
 import ClientDetails from './pages/Clientmaster/ClientDetails';
 import DisplayRecruiterDetails from './components/Recruiterform/DisplayRecruiterDetails';
 import DisplayClientDetails from './components/ClientForm/DisplayClientDetails';
+import AddPortal from './pages/Postingmaster/AddPortal';
+import AddPosting from './pages/Postingmaster/AddPosting';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -146,8 +148,26 @@ function App() {
               path="/client-master/client-details/display-client-details"
               element={
                 <>
-                  <PageTitle title="Client Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Display Client Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                   <DisplayClientDetails />
+                </>
+              }
+            />
+            <Route
+              path="/porting-master/add-portal"
+              element={
+                <>
+                  <PageTitle title="Add Portal | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <AddPortal />
+                </>
+              }
+            />
+            <Route
+              path="/posting-master/add-posting"
+              element={
+                <>
+                  <PageTitle title="Add Posting | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <AddPosting />
                 </>
               }
             />
