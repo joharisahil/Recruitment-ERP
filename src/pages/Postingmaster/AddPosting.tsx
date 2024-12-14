@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react';
-import { getAllPortals, Portal } from '../../services/postingService';
+import {
+  getAllPortals,
+  Portal,
+  Recruiter,
+} from '../../services/postingService';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import { fetchRecruiters } from '../../services/postingService';
 
 const AddPosting = () => {
   const [portals, setPortals] = useState<Portal[]>([]);
   const [loading, setLoading] = useState(false);
+  const [recruiters, setRecruiters] = useState<Recruiter[]>([]); // State to store recruiter data
 
   useEffect(() => {
     const fetchPortals = async () => {
       try {
         setLoading(true);
-        const fetchedPortals = await getAllPortals(); // Fetch portals via the service
+        const fetchedPortals = await getAllPortals();
         setPortals(fetchedPortals);
         setLoading(false);
       } catch (error) {
@@ -20,6 +26,20 @@ const AddPosting = () => {
     };
 
     fetchPortals();
+  }, []);
+
+  useEffect(() => {
+    const getRecruiters = async () => {
+      try {
+        const data = await fetchRecruiters(); // Fetch data from the service
+        setRecruiters(data);
+        setLoading(false);
+      } catch (err: any) {
+        setLoading(false);
+      }
+    };
+
+    getRecruiters(); // Fetch recruiters when the component mounts
   }, []);
 
   return (
@@ -75,11 +95,13 @@ const AddPosting = () => {
                   defaultValue=""
                 >
                   <option value="" disabled>
-                    Select recruiter
+                    {loading ? 'Loading recruiters...' : 'Select recruiter'}
                   </option>
-                  <option value="">Shivang</option>
-                  <option value="">Keshav</option>
-                  <option value="">Yaman</option>
+                  {recruiters.map((recruiter) => (
+                    <option key={recruiter.token} value={recruiter.FirstName}>
+                      {recruiter.FirstName}&nbsp;{recruiter.LastName}
+                    </option>
+                  ))}
                 </select>
               </div>
 

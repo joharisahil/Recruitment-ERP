@@ -231,6 +231,7 @@ export const onBoardRecruiter = async (payload: OnboardingPayload): Promise<ApiR
   }
 };
 
+//API to fetch the list of recruiters
 export const fetchRecruiters = async () => {
   try {
     const response = await axios.get('https://recruitmentsystem.onrender.com/api/admin/getAllOnBoardRecruiters');
