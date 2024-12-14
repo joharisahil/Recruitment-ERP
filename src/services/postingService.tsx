@@ -1,14 +1,13 @@
 import axios from 'axios';
 
 export interface Portal {
-  PortalId: string; // Adjust the type (string/number) based on your actual data
-  portal: string; // Adjust this based on your API response
+  portalToken: string; 
+  portal: string; 
 }
 
 export interface Recruiter {
-  token: string; // Adjust the type (string/number) based on your actual data
-  FirstName: string; // Adjust this based on your API response
-  LastName: string;
+  token: string; 
+  EmailId_Official:string;
 }
 
 //API for creating a new portal
@@ -55,3 +54,21 @@ export const fetchRecruiters = async () => {
     throw new Error(error.message || 'Failed to fetch recruiters');
   }
 };
+
+
+// Create a posting
+export const createPosting = async (payload: {
+    RequestMap: {
+      portalToken: string;
+      subject: string;
+      assignedTo: string;
+      permittedRefresh: string;
+    };
+  }): Promise<void> => {
+    try {
+      await axios.post('https://recruitmentsystem.onrender.com/api/portal/createPosting', payload);
+    } catch (error) {
+      console.error('Error creating posting:', error);
+      throw error;
+    }
+  };
