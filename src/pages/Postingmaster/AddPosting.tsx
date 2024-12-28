@@ -228,7 +228,7 @@ const AddPosting = () => {
           </form>
         </div>
       </div>
-    </>
+    </> 
   );
 };
 

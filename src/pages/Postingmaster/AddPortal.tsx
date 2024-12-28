@@ -28,7 +28,6 @@ const AddPortal = () => {
 
     try {
       const response = await createPortal(formValues);
-      console.log('Portal created successfully:', response);
       toast.success('Portal added successfully!');
       setFormValues({
         portal: '',
@@ -37,8 +36,12 @@ const AddPortal = () => {
         inventoryStartDate: '',
         inventoryEndDate: '',
       });
-    } catch (error) {
-      toast.error('Failed to create portal. Please try again.');
+    } catch (error: any) {
+      // Extract the backend error message
+      const errorMessage =
+        error.response?.data?.message ||
+        'Failed to create portal. Please try again.';
+      toast.error(errorMessage); // Display the backend error message
     } finally {
       setLoading(false);
     }
