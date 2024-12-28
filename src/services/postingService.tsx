@@ -88,13 +88,17 @@ export const createPosting = async (payload: {
 };
 
 //API for getting posting list in view portals
-export const getPostingsByPortal = async (portalToken: string): Promise<Posting[]> => {
+export const getPostingsByPortal = async (
+  portalToken: string,
+): Promise<Posting[]> => {
   try {
-    const response = await axios.post('https://recruitmentsystem.onrender.com/api/portal/getPosting', {
-      RequestMap: { portalToken },
-    });
+    const response = await axios.post(
+      'https://recruitmentsystem.onrender.com/api/portal/getPosting',
+      {
+        RequestMap: { portalToken },
+      },
+    );
     if (response.data.SuccessMessage) {
-      console.log(response.data.SuccessMessage); // Log success message
     }
     return response.data.Data || [];
   } catch (error) {

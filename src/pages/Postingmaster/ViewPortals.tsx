@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { getAllPortals, Portal } from '../../services/postingService';
 import { getPostingsByPortal, Posting } from '../../services/postingService';
+import { toast } from 'react-toastify';
 
 const ViewPortals = () => {
   const [portals, setPortals] = useState<Portal[]>([]);
@@ -76,7 +77,14 @@ const ViewPortals = () => {
         const fetchedPostings = await getPostingsByPortal(value);
         setPostings(fetchedPostings);
       } catch (error) {
-        console.error('Error fetching postings:', error);
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : 'An unexpected error occurred';
+
+        toast.error(errorMessage, {
+          position: 'top-right',
+        });
       }
     }
 
