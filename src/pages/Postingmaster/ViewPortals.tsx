@@ -116,7 +116,7 @@ const ViewPortals = () => {
             </h3>
           </div>
 
-          <form action="#">
+          <div>
             <div className="p-6.5">
               {/* Portal Dropdown */}
               <div className="mb-4.5">
@@ -280,7 +280,7 @@ const ViewPortals = () => {
                 />
               </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </>
