@@ -13,7 +13,7 @@ import ECommerce from './pages/Dashboard/ECommerce';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
-import Settings from './pages/Settings';
+// import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
@@ -29,6 +29,10 @@ import DisplayRecruiterDetails from './components/Recruiterform/DisplayRecruiter
 import DisplayClientDetails from './components/ClientForm/DisplayClientDetails';
 import AddPortal from './pages/Postingmaster/AddPortal';
 import AddPosting from './pages/Postingmaster/AddPosting';
+import ViewPortals from './pages/Postingmaster/ViewPortals';
+import InterviewStatusList from './pages/Generalsettings/InterviewStatusList';
+import MyProfile from './pages/Generalsettings/MyProfile';
+import DropReasonList from './pages/Generalsettings/DropReasonList';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -154,7 +158,7 @@ function App() {
               }
             />
             <Route
-              path="/porting-master/add-portal"
+              path="/posting-master/add-portal"
               element={
                 <>
                   <PageTitle title="Add Portal | TailAdmin - Tailwind CSS Admin Dashboard Template" />
@@ -168,6 +172,42 @@ function App() {
                 <>
                   <PageTitle title="Add Posting | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                   <AddPosting />
+                </>
+              }
+            />
+            <Route
+              path="/posting-master/view-portals"
+              element={
+                <>
+                  <PageTitle title="View Portals | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <ViewPortals />
+                </>
+              }
+            />
+            <Route
+              path="/general-settings/my-profile"
+              element={
+                <>
+                  <PageTitle title="My Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <MyProfile/>
+                </>
+              }
+            />
+            <Route
+              path="/general-settings/interview-status-list"
+              element={
+                <>
+                  <PageTitle title="Interview Status List | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <InterviewStatusList/>
+                </>
+              }
+            />
+            <Route
+              path="/general-settings/drop-reason-list"
+              element={
+                <>
+                  <PageTitle title="Drop Reason List | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <DropReasonList/>
                 </>
               }
             />
@@ -213,15 +253,6 @@ function App() {
                 <>
                   <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                   <Tables />
-                </>
-              }
-            />
-            <Route
-              path="/settings"
-              element={
-                <>
-                  <PageTitle title="Settings | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                  <Settings />
                 </>
               }
             />
