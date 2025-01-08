@@ -1,10 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/index';
+import { login } from '../../store/authSlice';
+import { useForm } from 'react-hook-form';
+
+interface LoginForm {
+  username: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch here
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<LoginForm>();
+  const { token } = useSelector((state: RootState) => state.auth);
+
+  if (token) {
+    return <Navigate to="/" />;
+  }
+
+  const onSubmit = async (data: { username: string; password: string }) => {
+    const result = await dispatch(login(data));
+    if (login.fulfilled.match(result)) {
+      navigate('/'); // Redirect to the main dashboard
+    } else {
+      alert('Login failed. Please try again.');
+    }
+  };
+
   return (
     <>
       <Breadcrumb pageName="Sign In" />
@@ -155,7 +183,7 @@ const SignIn: React.FC = () => {
                 Sign In to TailAdmin
               </h2>
 
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -163,7 +191,8 @@ const SignIn: React.FC = () => {
                   <div className="relative">
                     <input
                       type="email"
-                      placeholder="Enter your email"
+                      {...register('username')}
+                      placeholder="Username"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
@@ -193,8 +222,9 @@ const SignIn: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                      {...register('password')}
                       type="password"
-                      placeholder="6+ Characters, 1 Capital letter"
+                      placeholder="Password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
