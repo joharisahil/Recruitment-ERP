@@ -4,6 +4,7 @@ import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice';
+import { toast } from 'react-toastify';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -13,6 +14,7 @@ const DropdownUser = () => {
   const handleLogout = () => {
     dispatch(logout()); // Dispatch the logout action
     navigate('/auth/signin', { replace: true }); // Redirect the user to the login page
+    toast.success('Successfully Logout');
   };
 
   return (

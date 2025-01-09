@@ -76,7 +76,15 @@ function App() {
       {/* Check for /auth/signin route */}
       {pathname === '/auth/signin' ? (
         <Routes>
-          <Route path="/auth/signin" element={<SignIn />} />
+          <Route
+            path="/auth/signin"
+            element={
+              <>
+                <PageTitle title="Login Page | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <SignIn />
+              </>
+            }
+          />
         </Routes>
       ) : (
         <>

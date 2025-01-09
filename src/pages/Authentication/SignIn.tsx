@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/index';
 import { login } from '../../store/authSlice';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface LoginForm {
   username: string;
@@ -18,7 +19,7 @@ const SignIn: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch here
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<LoginForm>();
-  const { token } = useSelector((state: RootState) => state.auth);
+  const { token, loading } = useSelector((state: RootState) => state.auth);
 
   if (token) {
     return <Navigate to="/" />;
@@ -27,20 +28,21 @@ const SignIn: React.FC = () => {
   const onSubmit = async (data: { username: string; password: string }) => {
     const result = await dispatch(login(data));
     if (login.fulfilled.match(result)) {
+      toast.success('Login successful');
       navigate('/'); // Redirect to the main dashboard
     } else {
-      alert('Login failed. Please try again.');
+      toast.error('Login failed. Please try again.');
     }
   };
 
   return (
     <>
-      <Breadcrumb pageName="Sign In" />
-
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-wrap items-center">
-          <div className="hidden w-full xl:block xl:w-1/2">
-            <div className="py-17.5 px-26 text-center">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  min-h-screen">
+        <div className="flex flex-wrap items-center min-h-screen">
+          <div className="hidden min-h-screen w-full xl:block xl:w-1/2">
+            {/* need to add the content to the center of the page and remove mt-20 */}
+            <div className="py-17.5 px-26 mt-20 text-center min-h-screen">
+              {/* need to add any url at Link to below */}
               <Link className="mb-5.5 inline-block" to="/">
                 <img className="hidden dark:block" src={Logo} alt="Logo" />
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
@@ -176,8 +178,8 @@ const SignIn: React.FC = () => {
             </div>
           </div>
 
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
-            <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
+          <div className="w-full min-h-screen border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+            <div className="w-full min-h-screen p-4 sm:p-12.5 xl:p-17.5 mt-20">
               <span className="mb-1.5 block font-medium">Start for free</span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Sign In to TailAdmin
@@ -253,11 +255,18 @@ const SignIn: React.FC = () => {
                 </div>
 
                 <div className="mb-5">
-                  <input
+                  <button
                     type="submit"
-                    value="Sign In"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
-                  />
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <div className="loader border-t-transparent border-4 border-white w-5 h-5 rounded-full animate-spin"></div>
+                      </div>
+                    ) : (
+                      'Sign In'
+                    )}
+                  </button>
                 </div>
 
                 <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
