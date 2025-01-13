@@ -2,53 +2,47 @@ import { NavLink } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb';
 import { useEffect, useState } from 'react';
-import { getRecruiterDetailsByToken } from '../../services/recruiterService';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Loader from '../../common/Loader';
+import { getCandidateDetailsByToken } from '../../services/recruiter/candidate';
 
-const DisplayRecruiterDetails = () => {
+const ViewCandidateDetails = () => {
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(true);
   const [formData, setFormData] = useState({
-    lastName: '',
-    previousCompanyName: '',
-    address: '',
-    mobileNoPersonal: '',
-    education: '',
-    gender: '',
-    bankBranch: '',
-    previousJobTitle: '',
-    lastWorkingDate: '',
-    dateOfBirth: '',
-    bankName: '',
-    panNumber: '',
-    totalExp: '',
+    CandidateToken: '',
     firstName: '',
-    lastJoinDate: '',
-    aadhaarNumber: '',
+    lastName: '',
+    dateOfBirth: '',
+    gender: '',
+    address: '',
+    emailId: '',
+    mobileNo: '',
+    qualification: '',
     educationPercent: '',
-    accountNo: '',
-    email: '',
-    totalRecruitmentExp: '',
-    ifscCode: '',
-    emailIdOfficial: '',
-    joiningTarget: '',
-    billingTarget: '',
-    mobileNoOfficial: '',
-    hiringManager: '',
+    experience: '',
+    totalExperience: '',
+    aadhaarNumber: '',
+    panNumber: '',
+    previousCompanyName: '',
+    previousJobTitle: '',
+    totalExp: '',
+    preferredJob: '',
+    lastJoinDate: '',
+    lastLeavingDate: '',
   });
 
   useEffect(() => {
-    const fetchRecruiterDetails = async () => {
+    const fetchCandidateDetails = async () => {
       try {
         // Extract token from URL
         const params = new URLSearchParams(location.search);
-        const token = params.get('token');
+        const candidatetoken = params.get('candidatetoken');
 
-        if (token) {
+        if (candidatetoken) {
           // Fetch data using the API
-          const data = await getRecruiterDetailsByToken(token);
+          const data = await getCandidateDetailsByToken(candidatetoken);
           setFormData(data);
         }
       } catch (error) {
@@ -71,12 +65,12 @@ const DisplayRecruiterDetails = () => {
       }
     };
 
-    fetchRecruiterDetails();
+    fetchCandidateDetails();
   }, [location.search]);
 
   return (
     <>
-      <Breadcrumb pageName="OnBoarding Details" />
+      <Breadcrumb pageName="Candidate Details" />
       {loading ? (
         <div
           className="flex justify-center items-start h-full"
@@ -89,12 +83,12 @@ const DisplayRecruiterDetails = () => {
           <div className="relative rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Recruiter OnBoarding Summary
+                {formData.firstName} OnBoarded Details
               </h3>
             </div>
             {/* Close Button */}
             <NavLink
-              to="/recruiter-master/recruiter-details"
+              to="/recruiter/interview-alignment/candidate-details"
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 text-2xl p-2"
             >
               &times;
@@ -191,7 +185,7 @@ const DisplayRecruiterDetails = () => {
                     <input
                       type="email"
                       placeholder="Enter your email"
-                      value={formData.email || ''}
+                      value={formData.emailId || ''}
                       readOnly
                       // value={form.firstName}
                       // onChange={(e) =>
@@ -208,7 +202,7 @@ const DisplayRecruiterDetails = () => {
                     <input
                       type="number"
                       placeholder="Enter your Mobile Number"
-                      value={formData.mobileNoPersonal || ''}
+                      value={formData.mobileNo || ''}
                       readOnly
                       // value={form.lastName}
                       // onChange={(e) =>
@@ -222,12 +216,12 @@ const DisplayRecruiterDetails = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Bank Name
+                      Qualification
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your bank name"
-                      value={formData.bankName || ''}
+                      placeholder="qualification"
+                      value={formData.qualification || ''}
                       readOnly
                       // value={form.firstName}
                       // onChange={(e) =>
@@ -239,12 +233,12 @@ const DisplayRecruiterDetails = () => {
 
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Bank Branch
+                      Highest Education Percent
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your bank branch"
-                      value={formData.bankBranch || ''}
+                      placeholder="highest education percent"
+                      value={formData.educationPercent || ''}
                       readOnly
                       // value={form.lastName}
                       // onChange={(e) =>
@@ -258,12 +252,12 @@ const DisplayRecruiterDetails = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Account Number
+                      Experience
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your account number"
-                      value={formData.accountNo || ''}
+                      placeholder="Experience"
+                      value={formData.experience || ''}
                       readOnly
                       // value={form.firstName}
                       // onChange={(e) =>
@@ -275,12 +269,12 @@ const DisplayRecruiterDetails = () => {
 
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      IFSC Code
+                      Total Experience
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your IFSC code"
-                      value={formData.ifscCode || ''}
+                      placeholder="Total experience"
+                      value={formData.totalExperience || ''}
                       readOnly
                       // value={form.lastName}
                       // onChange={(e) =>
@@ -298,7 +292,7 @@ const DisplayRecruiterDetails = () => {
                     </label>
                     <input
                       type="number"
-                      placeholder="Enter your adhaar number"
+                      placeholder="Adhaar number"
                       value={formData.aadhaarNumber || ''}
                       readOnly
                       // value={form.firstName}
@@ -315,7 +309,7 @@ const DisplayRecruiterDetails = () => {
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your pan number"
+                      placeholder="Pan number"
                       value={formData.panNumber || ''}
                       readOnly
                       // value={form.lastName}
@@ -334,7 +328,7 @@ const DisplayRecruiterDetails = () => {
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your previous company name"
+                      placeholder="Previous company name"
                       value={formData.previousCompanyName || ''}
                       readOnly
                       // value={form.firstName}
@@ -351,7 +345,7 @@ const DisplayRecruiterDetails = () => {
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your previous job title"
+                      placeholder="Previous job title"
                       value={formData.previousJobTitle || ''}
                       readOnly
                       // value={form.lastName}
@@ -370,7 +364,7 @@ const DisplayRecruiterDetails = () => {
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your total experience"
+                      placeholder="Total experience"
                       value={formData.totalExp || ''}
                       readOnly
                       // value={form.firstName}
@@ -383,12 +377,12 @@ const DisplayRecruiterDetails = () => {
 
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Total Recruitement Experience
+                      Preferred Job
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your total recruitement experience"
-                      value={formData.totalRecruitmentExp || ''}
+                      placeholder="Preferred job"
+                      value={formData.preferredJob || ''}
                       readOnly
                       // value={form.lastName}
                       // onChange={(e) =>
@@ -406,7 +400,7 @@ const DisplayRecruiterDetails = () => {
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your joining date with last employer"
+                      placeholder="Joining date with last employer"
                       value={formData.lastJoinDate || ''}
                       readOnly
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -420,7 +414,7 @@ const DisplayRecruiterDetails = () => {
                     <input
                       type="text"
                       placeholder="Enter your last working date with last employer"
-                      value={formData.lastWorkingDate || ''}
+                      value={formData.lastJoinDate || ''}
                       readOnly
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -430,12 +424,12 @@ const DisplayRecruiterDetails = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      Highest Education
+                      Last Leaving Date
                     </label>
                     <input
                       type="text"
-                      placeholder="Enter your highest education"
-                      value={formData.education || ''}
+                      placeholder="Last leaving date"
+                      value={formData.lastLeavingDate || ''}
                       readOnly
                       // value={form.firstName}
                       // onChange={(e) =>
@@ -445,7 +439,7 @@ const DisplayRecruiterDetails = () => {
                     />
                   </div>
 
-                  <div className="w-full xl:w-1/2">
+                  {/* <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Highest Education Percentage
                     </label>
@@ -460,7 +454,7 @@ const DisplayRecruiterDetails = () => {
                       // }
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row xl:flex-wrap">
@@ -522,83 +516,6 @@ const DisplayRecruiterDetails = () => {
                     </button>
                   </div>
                 </div>
-
-                <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Official Email
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="Enter official email"
-                    value={formData.emailIdOfficial || ''} // Bind state
-                    readOnly
-                    //   value={form.email}
-                    //   onChange={(e) =>
-                    //     handleInputChange(index, 'email', e.target.value)
-                    //   }
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Joining Target
-                  </label>
-                  <input
-                    type="number"
-                    //placeholder="Enter official email"
-                    value={formData.joiningTarget || ''} // Bind state
-                    //   value={form.email}
-                    //   onChange={(e) =>
-                    //     handleInputChange(index, 'email', e.target.value)
-                    //   }
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Billing Target
-                  </label>
-                  <input
-                    type="number"
-                    //placeholder="Enter official email"
-                    value={formData.billingTarget || ''} // Bind state
-                    //   value={form.email}
-                    //   onChange={(e) =>
-                    //     handleInputChange(index, 'email', e.target.value)
-                    //   }
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Mobile Number Official
-                  </label>
-                  <input
-                    type="number"
-                    // placeholder="Enter official email"
-                    value={formData.mobileNoOfficial || ''} // Bind state
-                    //   value={form.email}
-                    //   onChange={(e) =>
-                    //     handleInputChange(index, 'email', e.target.value)
-                    //   }
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                <div className="mb-4.5">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Hiring Manager
-                  </label>
-                  <input
-                    type="text"
-                    //placeholder="Enter official email"
-                    value={formData.hiringManager || ''} // Bind state
-                    //   value={form.email}
-                    //   onChange={(e) =>
-                    //     handleInputChange(index, 'email', e.target.value)
-                    //   }
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
               </div>
             </form>
           </div>
@@ -608,4 +525,4 @@ const DisplayRecruiterDetails = () => {
   );
 };
 
-export default DisplayRecruiterDetails;
+export default ViewCandidateDetails;

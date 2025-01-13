@@ -5,8 +5,8 @@ import {
   createPosting,
   Portal,
   Recruiter,
-} from '../../services/postingService';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+} from '../../../services/postingService';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import { toast } from 'react-toastify';
 
 const AddPosting = () => {
@@ -228,7 +228,7 @@ const AddPosting = () => {
           </form>
         </div>
       </div>
-    </> 
+    </>
   );
 };
 

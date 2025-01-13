@@ -1,10 +1,10 @@
 import { NavLink } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
-import { getAllRecruiters } from '../../services/recruiterService';
-import Loader from '../../common/Loader';
+import { getAllRecruiters } from '../../../services/recruiterService';
+import Loader from '../../../common/Loader';
 
 const OnboardingList = () => {
   const [loading, setLoading] = useState<boolean>(true);

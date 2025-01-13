@@ -86,6 +86,9 @@ interface DisplayRecruiterResponse {
     "totalRecruitmentExp": string;
     "ifscCode": string;
     "emailIdOfficial": string;
+    "joiningTarget": string;
+    "billingTarget":string;
+    "hiringManager":string;
   }
 }
 
@@ -93,6 +96,10 @@ interface OnboardingPayload {
   RequestMap:{  
     token: string;
     EmailIdOfficial: string;
+    joiningTarget: string;
+    billingTarget:string;
+    mobileNoOfficial:string;
+    hiringManager:string;
   }
 }
 

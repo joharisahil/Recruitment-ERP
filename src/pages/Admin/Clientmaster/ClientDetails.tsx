@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import { NavLink } from 'react-router-dom';
-import { getAllClients } from '../../services/clientService';
-import Loader from '../../common/Loader';
+import { getAllClients } from '../../../services/clientService';
+import Loader from '../../../common/Loader';
 
 interface Client {
   clientId: string;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import { getAllPortals, Portal } from '../../services/postingService';
-import { getPostingsByPortal, Posting } from '../../services/postingService';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
+import { getAllPortals, Portal } from '../../../services/postingService';
+import { getPostingsByPortal, Posting } from '../../../services/postingService';
 import { toast } from 'react-toastify';
 
 const ViewPortals = () => {

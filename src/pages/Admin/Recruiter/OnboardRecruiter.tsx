@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import OnboardingList from './OnboardingList';
-import { addRecruiter } from '../../services/recruiterService';
+import { addRecruiter } from '../../../services/recruiterService';
 import axios from 'axios';
 
 type RecruiterFormField = 'firstName' | 'lastName' | 'email' | 'submitted';

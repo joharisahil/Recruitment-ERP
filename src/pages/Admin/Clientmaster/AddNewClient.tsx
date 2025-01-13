@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createClient } from '../../services/clientService';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import { createClient } from '../../../services/clientService';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import { toast } from 'react-toastify';
 
 interface Profile {

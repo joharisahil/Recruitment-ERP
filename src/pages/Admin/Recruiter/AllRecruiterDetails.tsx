@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 import { NavLink } from 'react-router-dom';
-import { fetchRecruiters } from '../../services/recruiterService';
-import Loader from '../../common/Loader';
+import { fetchRecruiters } from '../../../services/recruiterService';
+import Loader from '../../../common/Loader';
 
 const AllRecruiterDetails = () => {
   const [recruiters, setRecruiters] = useState([]); // State to store recruiter data

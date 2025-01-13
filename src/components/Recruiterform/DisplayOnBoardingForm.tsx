@@ -29,12 +29,15 @@ const DisplayOnBoardingForm = () => {
     lastJoinDate: '',
     aadhaarNumber: '',
     educationPercent: '',
-    mobileNoOfficial: '',
     accountNo: '',
     email: '',
     totalRecruitmentExp: '',
     ifscCode: '',
     emailIdOfficial: '', // User-provided field
+    joiningTarget: '',
+    billingTarget: '',
+    mobileNoOfficial: '',
+    hiringManager: '',
   });
 
   useEffect(() => {
@@ -100,6 +103,10 @@ const DisplayOnBoardingForm = () => {
         RequestMap: {
           token,
           EmailIdOfficial: formData.emailIdOfficial,
+          joiningTarget: formData.joiningTarget,
+          billingTarget: formData.billingTarget,
+          mobileNoOfficial: formData.mobileNoOfficial,
+          hiringManager: formData.hiringManager,
         },
       };
 
@@ -572,6 +579,90 @@ const DisplayOnBoardingForm = () => {
                     setFormData((prev) => ({
                       ...prev,
                       emailIdOfficial: e.target.value, // Update state
+                    }))
+                  }
+                  //   value={form.email}
+                  //   onChange={(e) =>
+                  //     handleInputChange(index, 'email', e.target.value)
+                  //   }
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Joining Target
+                </label>
+                <input
+                  type="number"
+                  //placeholder="Enter official email"
+                  value={formData.joiningTarget || ''} // Bind state
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      joiningTarget: e.target.value, // Update state
+                    }))
+                  }
+                  //   value={form.email}
+                  //   onChange={(e) =>
+                  //     handleInputChange(index, 'email', e.target.value)
+                  //   }
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Billing Target
+                </label>
+                <input
+                  type="number"
+                  //placeholder="Enter official email"
+                  value={formData.billingTarget || ''} // Bind state
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      billingTarget: e.target.value, // Update state
+                    }))
+                  }
+                  //   value={form.email}
+                  //   onChange={(e) =>
+                  //     handleInputChange(index, 'email', e.target.value)
+                  //   }
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Mobile Number Official
+                </label>
+                <input
+                  type="number"
+                  // placeholder="Enter official email"
+                  value={formData.mobileNoOfficial || ''} // Bind state
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      mobileNoOfficial: e.target.value, // Update state
+                    }))
+                  }
+                  //   value={form.email}
+                  //   onChange={(e) =>
+                  //     handleInputChange(index, 'email', e.target.value)
+                  //   }
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+              <div className="mb-4.5">
+                <label className="mb-2.5 block text-black dark:text-white">
+                  Hiring Manager
+                </label>
+                <input
+                  type="text"
+                  //placeholder="Enter official email"
+                  value={formData.hiringManager || ''} // Bind state
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      hiringManager: e.target.value, // Update state
                     }))
                   }
                   //   value={form.email}

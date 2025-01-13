@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import {
   getRecruiterByToken,
   saveRecruiter,
-} from '../../services/recruiterService';
+} from '../../../services/recruiterService';
 import { toast } from 'react-toastify';
 
 const OnboardingForm = () => {
@@ -115,9 +115,7 @@ const OnboardingForm = () => {
 
     try {
       const response = await saveRecruiter(payload);
-      toast.success(
-        response.SuccessMessage || 'Form Submitted Successfully',
-      );
+      toast.success(response.SuccessMessage || 'Form Submitted Successfully');
       setSubmitForm(true);
     } catch (error) {
       console.error('Failed to save recruiter:', error);

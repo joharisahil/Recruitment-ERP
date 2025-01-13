@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import { createPortal } from '../../services/postingService';
+import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
+import { createPortal } from '../../../services/postingService';
 import { toast } from 'react-toastify';
 
 const AddPortal = () => {

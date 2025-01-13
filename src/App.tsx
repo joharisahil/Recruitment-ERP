@@ -9,7 +9,7 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
-import ECommerce from './pages/Dashboard/ECommerce';
+import ECommerce from './pages/Admin/Dashboard/ECommerce';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
@@ -18,23 +18,30 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
-import OnBoardRecruiter from './pages/Recruiter/OnboardRecruiter';
+import OnBoardRecruiter from './pages/Admin/Recruiter/OnboardRecruiter';
 import DisplayOnBoardingForm from './components/Recruiterform/DisplayOnBoardingForm';
-import OnboardingForm from './pages/Recruiter/OnboardingForm';
-import OnboardingList from './pages/Recruiter/OnboardingList';
-import AllRecruiterDetails from './pages/Recruiter/AllRecruiterDetails';
-import AddNewClient from './pages/Clientmaster/AddNewClient';
-import ClientDetails from './pages/Clientmaster/ClientDetails';
+import OnboardingForm from './pages/Admin/Recruiter/OnboardingForm';
+import OnboardingList from './pages/Admin/Recruiter/OnboardingList';
+import AllRecruiterDetails from './pages/Admin/Recruiter/AllRecruiterDetails';
+import AddNewClient from './pages/Admin/Clientmaster/AddNewClient';
+import ClientDetails from './pages/Admin/Clientmaster/ClientDetails';
 import DisplayRecruiterDetails from './components/Recruiterform/DisplayRecruiterDetails';
 import DisplayClientDetails from './components/ClientForm/DisplayClientDetails';
-import AddPortal from './pages/Postingmaster/AddPortal';
-import AddPosting from './pages/Postingmaster/AddPosting';
-import ViewPortals from './pages/Postingmaster/ViewPortals';
-import InterviewStatusList from './pages/Generalsettings/InterviewStatusList';
-import MyProfile from './pages/Generalsettings/MyProfile';
-import DropReasonList from './pages/Generalsettings/DropReasonList';
+import AddPortal from './pages/Admin/Postingmaster/AddPortal';
+import AddPosting from './pages/Admin/Postingmaster/AddPosting';
+import ViewPortals from './pages/Admin/Postingmaster/ViewPortals';
+import InterviewStatusList from './pages/Admin/Generalsettings/InterviewStatusList';
+import MyProfile from './pages/Admin/Generalsettings/MyProfile';
+import DropReasonList from './pages/Admin/Generalsettings/DropReasonList';
 import { useSelector } from 'react-redux';
 import { RootState } from './store';
+import AddCandidate from './pages/Recruiter/Interviewalignment/AddCandidate';
+import CandidateDetails from './pages/Recruiter/Interviewalignment/CandidateDetails';
+import ScheduleInterview from './components/CandidateForm/ScheduleInterview';
+import InterviewStatus from './pages/Recruiter/Candidatestatus/InterviewStatus';
+import AssignInterviewStatus from './components/CandidateForm/AssignInterviewStatus';
+import JoiningStatus from './pages/Recruiter/Candidatestatus/JoiningStatus';
+import ViewCandidateDetails from './components/CandidateForm/ViewCandidateDetails';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -88,7 +95,6 @@ function App() {
         </Routes>
       ) : (
         <>
-          {/* Check for /onboarding-form route */}
           {pathname === '/onboarding-form' ? (
             <Routes>
               <Route
@@ -236,6 +242,69 @@ function App() {
                     <>
                       <PageTitle title="Drop Reason List | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                       <DropReasonList />
+                    </>
+                  }
+                />
+                <Route
+                  path="/recruiter/interview-alignment/add-candidate"
+                  element={
+                    <>
+                      <PageTitle title="Add Candidate | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                      <AddCandidate />
+                    </>
+                  }
+                />
+                <Route
+                  path="/recruiter/interview-alignment/candidate-details"
+                  element={
+                    <>
+                      <PageTitle title="Candidate Details | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                      <CandidateDetails />
+                    </>
+                  }
+                />
+                <Route
+                  path="/recruiter/interview-alignment/candidate-details/schedule-interview"
+                  element={
+                    <>
+                      <PageTitle title="Schedule Interview | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                      <ScheduleInterview />
+                    </>
+                  }
+                />
+                <Route
+                  path="recruiter/candidate-status/interview-status"
+                  element={
+                    <>
+                      <PageTitle title="Interview Status | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                      <InterviewStatus />
+                    </>
+                  }
+                />
+                <Route
+                  path="/recruiter/candidate-status/interview-status/assign-interview-status"
+                  element={
+                    <>
+                      <PageTitle title="Assign Interview Status | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                      <AssignInterviewStatus />
+                    </>
+                  }
+                />
+                <Route
+                  path="/recruiter/candidate-status/joining-status"
+                  element={
+                    <>
+                      <PageTitle title="Joining Status | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                      <JoiningStatus />
+                    </>
+                  }
+                />
+                <Route
+                  path="/recruiter/interview-alignment/candidate-details/view-candidate-details"
+                  element={
+                    <>
+                      <PageTitle title="Joining Status | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                      <ViewCandidateDetails />
                     </>
                   }
                 />
