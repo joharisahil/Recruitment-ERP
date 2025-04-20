@@ -48,8 +48,8 @@ const SignIn: React.FC = () => {
               </Link>
 
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                Empower Hiring with Ease: The Smartest & Most Powerful
+                Recruitment ERP!
               </p>
 
               <span className="mt-15 inline-block">
@@ -181,7 +181,7 @@ const SignIn: React.FC = () => {
             <div className="w-full min-h-screen p-4 sm:p-12.5 xl:p-17.5 mt-20">
               <span className="mb-1.5 block font-medium">Start for free</span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign In to TailAdmin
+                Sign In to Ezirecruit
               </h2>
 
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -219,7 +219,7 @@ const SignIn: React.FC = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                    Password
                   </label>
                   <div className="relative">
                     <input
@@ -268,7 +268,7 @@ const SignIn: React.FC = () => {
                   </button>
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                {/* <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
@@ -303,14 +303,14 @@ const SignIn: React.FC = () => {
                     </svg>
                   </span>
                   Sign in with Google
-                </button>
+                </button> */}
 
                 <div className="mt-6 text-center">
                   <p>
                     Don’t have any account?{' '}
-                    <Link to="/auth/signup" className="text-primary">
+                    {/* <Link to="/auth/signup" className="text-primary">
                       Sign Up
-                    </Link>
+                    </Link> */}
                   </p>
                 </div>
               </form>

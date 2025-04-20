@@ -5,6 +5,7 @@ import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb';
 
 const AddCandidate = () => {
   const [submitForm, setSubmitForm] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [candidateSubmitData, setCandidateSubmitData] = useState({
     firstName: '',
@@ -30,6 +31,7 @@ const AddCandidate = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const payload = {
       RequestMap: {
@@ -43,6 +45,7 @@ const AddCandidate = () => {
       setSubmitForm(true);
     } catch (error) {
       console.error('Failed to save candidate:', error);
+      setLoading(false);
     }
   };
 
@@ -501,9 +504,10 @@ const AddCandidate = () => {
               <div className="flex gap-4 mt-4">
                 <button
                   type="submit"
+                  disabled={loading}
                   className="rounded bg-primary py-3 px-5 font-medium text-gray hover:bg-opacity-90"
                 >
-                  OnBoard Candidate
+                  {loading ? 'Submitting...' : 'Submit'}
                 </button>
                 {/* <button className="rounded bg-primary p-2 font-medium text-gray hover:bg-opacity-90">
                   Close

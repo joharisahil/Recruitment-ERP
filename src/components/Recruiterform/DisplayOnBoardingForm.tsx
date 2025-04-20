@@ -83,11 +83,9 @@ const DisplayOnBoardingForm = () => {
 
   const handleOnBoard = async () => {
     try {
-      // Extract token from the URL
       const params = new URLSearchParams(location.search);
       const token = params.get('token');
 
-      // Validate token and emailIdOfficial
       if (!token) {
         toast.error('Token is missing from the URL.');
         return;
@@ -98,7 +96,6 @@ const DisplayOnBoardingForm = () => {
         return;
       }
 
-      // Prepare payload
       const payload = {
         RequestMap: {
           token,
@@ -110,27 +107,21 @@ const DisplayOnBoardingForm = () => {
         },
       };
 
-      // Call the onBoardRecruiter API function
       const response = await onBoardRecruiter(payload);
 
-      // Handle success response
       toast.success(
-        response.SuccessMessage || 'Recruiter On-Boarded successfully',
+        response?.SuccessMessage || 'Recruiter On-Boarded successfully',
       );
-    } catch (error) {
-      // Handle errors safely
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error:', error.response?.data || error.message);
-        toast.error(
-          error.response?.data?.message || 'Failed to onboard recruiter.',
-        );
-      } else if (error instanceof Error) {
-        console.error('Error:', error.message);
-        toast.error(error.message);
-      } else {
-        console.error('Unknown error occurred.');
-        toast.error('An unknown error occurred.');
-      }
+    } catch (error: any) {
+      const errorMessage =
+        error?.ErrorMessage || // Direct key
+        error?.details?.ErrorMessage || // Nested key
+        error?.message || // Generic message
+        'An unknown error occurred.';
+
+      toast.error(errorMessage);
+
+      console.error('Error during onboarding:', error);
     }
   };
 

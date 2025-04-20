@@ -217,6 +217,7 @@ export const getRecruiterDetailsByToken = async (token: string): Promise<Display
   }
 };
 
+//Api for final onboarding of recruiter from admin
 export const onBoardRecruiter = async (payload: OnboardingPayload): Promise<ApiResponse> => {
   try {
     const response = await axios.post<ApiResponse>(
@@ -226,17 +227,18 @@ export const onBoardRecruiter = async (payload: OnboardingPayload): Promise<ApiR
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error('Axios error:', error.response?.data || error.message);
-      throw new Error(error.response?.data?.message || 'Failed to save recruiter details.');
+      console.error('Axios error response data:', error.response?.data);
+      throw error.response?.data || { message: 'Failed to save recruiter details.' };
     } else if (error instanceof Error) {
       console.error('General error:', error.message);
-      throw new Error(error.message);
+      throw { message: error.message };
     } else {
       console.error('Unknown error:', error);
-      throw new Error('An unknown error occurred.');
+      throw { message: 'An unknown error occurred.' };
     }
   }
 };
+
 
 //API to fetch the list of recruiters
 export const fetchRecruiters = async () => {
