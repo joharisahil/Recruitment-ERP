@@ -61,7 +61,8 @@ const OnboardingList = () => {
 
   // Copy the onboarding form link
   const copyToClipboard = (token: string) => {
-    const onboardingLink = `http://localhost:5173/onboarding-form?token=${token}`;
+    // const onboardingLink = `http://localhost:5173/onboarding-form?token=${token}`;
+    const onboardingLink = `https://ezirecruit.com/#/onboarding-form?token=${token}`;
     navigator.clipboard
       .writeText(onboardingLink)
       .then(() => {
