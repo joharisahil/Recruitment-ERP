@@ -26,6 +26,8 @@ export const login = createAsyncThunk(
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
 
+
+
     return { token, role };
   }
 );
@@ -42,6 +44,8 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    
+    
     builder
       .addCase(login.pending, (state) => {
         state.loading = true;
