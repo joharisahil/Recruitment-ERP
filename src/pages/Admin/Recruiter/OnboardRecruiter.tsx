@@ -71,7 +71,7 @@ const OnboardRecruiter = () => {
       setRecruiterForms(updatedForms);
 
       // Navigate or use the token as required
-      const onboardingLink = `https://ezirecruit.com/#/onboarding-form?token=${response.token}`;
+      const onboardingLink = `https://ezirecruit.netlify.app/#/onboarding-form?token=${response.token}`;
       // `Link copied to clipboard: ${onboardingLink}`
       toast.success('Link copied to clipboard', {
         position: 'top-right',
